@@ -3,15 +3,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post'); 
-var userVerifyRouter = require('./routes/user_verify'); 
+var userVerifyRouter = require('./routes/userJwt'); 
+var cors = require('cors');
 
 var app = express();
 
-
+// Cross-Origin Resource Sharing 
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
