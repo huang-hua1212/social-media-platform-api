@@ -7,6 +7,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post'); 
 var userVerifyRouter = require('./routes/userJwt'); 
+var oauthLoginRouter = require('./routes/userOauth2'); 
 var cors = require('cors');
 
 var app = express();
@@ -28,6 +29,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/', postRouter);
 app.use('/', userVerifyRouter);
+app.use('/',oauthLoginRouter);
 
 
 

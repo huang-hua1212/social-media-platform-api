@@ -51,15 +51,15 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.generateAuthToken = async function () {
     // this 指向當前的使用者實例
     const user = this
-    console.log(user);
+    // console.log(user);
     const payload = {
         _id: user._id.toString(), // 自訂聲明
         iss: user.username,
 
     }
+
     // 產生一組 JWT
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1 day' })
-
     // 將該 token 存入資料庫中：讓使用者能跨裝置登入及登出
     user.tokens = user.tokens.concat({ token })
     await user.save()
