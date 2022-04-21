@@ -2,6 +2,9 @@ var express = require("express");
 var mongoose = require("mongoose");
 const userModel = require('../models/user.js');
 const auth = require('../middleware/varifyJwtToken');
+const login = require('../middleware/login');
+const accessControl = require('../middleware/accessControl');
+
 // const bcrypt = require('bcryptjs')
 // const jwt = require('jsonwebtoken');
 var router = express.Router();
@@ -49,7 +52,7 @@ router.post('/user/register', async (req, res) => {
 
 
 // 登入路由
-router.post('/user/login', async (req, res) => {
+router.post('/user/login',accessControl, async (req, res) => {
     try {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
@@ -91,21 +94,7 @@ router.post('/user/logout', auth, async (req, res) => {
 
 
 // oauth登入 = login(findByCredentials+generateAuthToken) + auth(驗證jwt token)
-router.post('/user/login-auth', async (req, res, next) => {
-    try {
-        // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
-        const user = await userModel.findByCredentials(req.body.username, req.body.password);
-        // 為該成功登入之用戶產生 JWT
-        const token = await user.generateAuthToken()
-        // 加個next會跑到之後的function (express框架限定)
-        next()
-    } catch {
-        res.status(400).send({
-            status: 'error',
-            message: '登入失敗',
-        })
-    }
-}, auth, async (req, res) => {
+router.post('/user/login-auth', login, auth, async (req, res) => {
     res.status(200).send({
         status: 'success',
         message: '登入成功',
