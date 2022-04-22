@@ -58,7 +58,6 @@ router.post('/posts', (req, res) => {
     const obj = req.body;
     const keys_1 = Object.keys(obj);
     var resObj = obj;
-
     postModel.create(resObj)
         .then((data) => {
             resObj = {};
@@ -78,7 +77,7 @@ router.post('/posts', (req, res) => {
                 });
             }
         })
-        .catch((err) => {
+        .catch(() => {
             res.status(200).json({
                 status: 'false',
                 data: '新增失敗',
@@ -94,15 +93,18 @@ router.patch('/posts/:id', (req, res) => {
     var resObj = {};
     const id = req.params.id;
     postModel.findByIdAndUpdate(id, resObj)
-        .then(() => {
+        .then((result) => {
             var fail = 0;
+            if(!result){
+                throw new Error(false);
+            }
             keys_1.forEach((value) => {
                 if (properties.indexOf(value) === -1) {
                     fail += 1;
                 }
                 resObj[value] = obj[value];
             })
-            if (fail > 0) {
+            if (fail > 0 ) {
                 res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
 
             } else {
@@ -134,11 +136,15 @@ router.delete('/posts', (req, res) => {
 router.delete('/posts/:id', (req, res) => {
     const id = req.params.id;
     postModel.findByIdAndDelete(id)
-        .then(() => {
-            res.status(200).json({
-                status: 'success',
-                data: '刪除成功',
-            })
+        .then((result) => {
+            if (!result) {
+                throw new Error(false);
+            } else {
+                res.status(200).json({
+                    status: 'success',
+                    data: '刪除成功',
+                })
+            }
         })
         .catch(() => {
             res.status(200).json({
