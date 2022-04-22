@@ -52,7 +52,8 @@ router.post('/user/register', async (req, res) => {
 
 
 // 登入路由
-router.post('/user/login',accessControl, async (req, res) => {
+// 未加入accessControl
+router.post('/user/login', async (req, res) => {
     try {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
@@ -75,6 +76,30 @@ router.post('/user/login',accessControl, async (req, res) => {
         })
     }
 })
+// // 加入accessControl //用於要get post put patch delete資料時，要經過accessControl權限的認證後方可根據身分來取用資料
+// router.post('/user/login',accessControl, async (req, res) => {
+//     try {
+//         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
+//         const user = await userModel.findByCredentials(req.body.username, req.body.password);
+//         // console.log(user);
+//         // 為該成功登入之用戶產生 JWT
+//         const token = await user.generateAuthToken()
+//         // 只放一個token
+//         user.tokens = [] //[token];
+//         user.tokens.push({ token });
+
+//         // 回傳該用戶資訊及 JWT
+//         res.status(201).send({
+//             status: 'success',
+//             user,
+//         })
+//     } catch (err) {
+//         res.status(400).send({
+//             status: 'false',
+//             error: err.message
+//         })
+//     }
+// })
 
 //  登出
 router.post('/user/logout', auth, async (req, res) => {
