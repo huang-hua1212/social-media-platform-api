@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const postModel = require('../models/post');
+const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 
 // 連結
