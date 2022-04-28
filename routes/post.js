@@ -45,10 +45,18 @@ router.get('/posts/:id', (req, res) => {
     const id = req.params.id;
     postModel.findById(id).exec(function (err, datas) {
         // console.log(docs);
-        res.status(200).json({
-            status: 'success',
-            datas,
-        });
+        if (!datas) {
+            res.status(200).json({
+                status: 'success',
+                datas,
+            });
+        } else {
+            res.status(401).json({
+                status: 'false',
+                message: "欄位未填寫正確，或無此 todo ID",
+            });
+        }
+
     });
 });
 
@@ -95,7 +103,7 @@ router.patch('/posts/:id', (req, res) => {
     postModel.findByIdAndUpdate(id, resObj)
         .then((result) => {
             var fail = 0;
-            if(!result){
+            if (!result) {
                 throw new Error(false);
             }
             keys_1.forEach((value) => {
@@ -104,7 +112,7 @@ router.patch('/posts/:id', (req, res) => {
                 }
                 resObj[value] = obj[value];
             })
-            if (fail > 0 ) {
+            if (fail > 0) {
                 res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
 
             } else {
