@@ -50,10 +50,18 @@ router.get('/posts/:id', (req, res) => {
     const id = req.params.id;
     postModel.findById(id).exec(function (err, datas) {
         // console.log(docs);
-        res.status(200).json({
-            status: 'success',
-            datas,
-        });
+        if (!datas) {
+            res.status(200).json({
+                status: 'success',
+                datas,
+            });
+        } else {
+            res.status(401).json({
+                status: 'false',
+                message: "欄位未填寫正確，或無此 todo ID",
+            });
+        }
+
     });
 });
 
