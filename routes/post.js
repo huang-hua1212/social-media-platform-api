@@ -40,8 +40,13 @@ router.get('/posts', (req, res) => {
     });
 });
 
+
+
+
+
 // get id
 router.get('/posts/:id', (req, res) => {
+    
     const id = req.params.id;
     postModel.findById(id).exec(function (err, datas) {
         // console.log(docs);
@@ -95,7 +100,7 @@ router.patch('/posts/:id', (req, res) => {
     postModel.findByIdAndUpdate(id, resObj)
         .then((result) => {
             var fail = 0;
-            if(!result){
+            if (!result) {
                 throw new Error(false);
             }
             keys_1.forEach((value) => {
@@ -104,7 +109,7 @@ router.patch('/posts/:id', (req, res) => {
                 }
                 resObj[value] = obj[value];
             })
-            if (fail > 0 ) {
+            if (fail > 0) {
                 res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
 
             } else {
@@ -153,6 +158,29 @@ router.delete('/posts/:id', (req, res) => {
             })
         });
 })
+
+
+
+// // 網址輸入錯誤處理
+// router.use((req, res, next) => {
+//     // 404:網址錯誤
+//     res.status(404).json({
+//         status: 'false',
+//         data: '網址輸入錯誤'
+//     })
+// })
+
+
+// // 程式錯誤處理
+// router.use((req, res, next) => {
+//     // 500:程式錯誤
+//     res.status(500).json({
+//         status: 'false',
+//         data: '程式發生問題，請稍後嘗試'
+//     })
+// })
+
+
 
 
 module.exports = router
