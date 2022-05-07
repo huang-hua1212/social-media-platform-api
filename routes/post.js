@@ -4,6 +4,23 @@ const mongoose = require('mongoose');
 const postModel = require('../models/post');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
+// Temp
+const refreshToken = require('../middleware/file/imgur/refreshToken');
+const uploadImg = require('../middleware/file/imgur/upload');
+var multer = require('multer');
+var uploadMulter = multer({
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png") {
+            cb(null, true)
+            return
+        } else {
+            cb(null, false)
+            return cb(new Error('Allowed only .png'))
+        }
+    }
+})
+
+
 
 // 連結
 const DB = process.env.DATABASE
@@ -65,9 +82,10 @@ router.get('/posts/:id', (req, res) => {
     });
 });
 
-// post
-router.post('/posts', (req, res) => {
-    const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
+// post_1 no Image Process
+router.post('/posts_1', (req, res) => {
+    // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
+    const properties = ['name', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
     var resObj = obj;
@@ -97,6 +115,43 @@ router.post('/posts', (req, res) => {
             })
         });
 });
+
+// post_2 with Image Imgur Process
+router.post('/posts',uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
+    const properties = ['name', 'tags', 'type', 'image', 'content'];
+    const obj = req.body;
+    const keys_1 = Object.keys(obj);
+    obj.image=req.imgFile.link;
+    var resObj = obj;
+    postModel.create(resObj)
+        .then((data) => {
+            resObj = {};
+            var fail = 0;
+            keys_1.forEach((value) => {
+                if (properties.indexOf(value) === -1) {
+                    fail += 1;
+                }
+                resObj[value] = obj[value];
+            })
+            if (fail > 0) {
+                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
+            } else {
+                res.status(200).json({
+                    status: "success",
+                    data,
+                });
+            }
+        })
+        .catch(() => {
+            res.status(200).json({
+                status: 'false',
+                message: '新增失敗',
+            })
+        });
+});
+
+
+
 
 // patch
 router.patch('/posts/:id', (req, res) => {

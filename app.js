@@ -8,6 +8,8 @@ var usersRouter = require('./routes/users');
 var postRouter = require('./routes/post');
 var userVerifyRouter = require('./routes/userJwt');
 var oauthLoginRouter = require('./routes/userOauth2');
+var uploadImgRouter = require('./routes/uploadImg');
+
 var cors = require('cors');
 
 // swagger
@@ -35,6 +37,10 @@ app.use('/users', usersRouter);
 app.use('/', postRouter);
 app.use('/', userVerifyRouter);
 app.use('/', oauthLoginRouter);
+app.use('/', uploadImgRouter);
+
+
+
 
 // swagger
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
