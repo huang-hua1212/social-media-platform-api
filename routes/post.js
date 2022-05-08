@@ -118,6 +118,7 @@ router.post('/posts_1', (req, res) => {
 
 // post_2 with Image Imgur Process
 router.post('/posts',uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
+    console.log(req.body);
     const properties = ['name', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
