@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const mongoose = require('mongoose');
 const postModel = require('../models/post');
+const userModel = require('../models/user');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 // Temp
@@ -41,14 +42,34 @@ mongoose.connect(DB)
 
 
 //get all
-router.get('/posts', (req, res) => {
+router.get('/posts', async (req, res) => {
+    // 找到關聯user資料 populate
+    // const user = await postModel.find().populate({
+    //     path: 'user',
+    //     select: 'name photo'
+    // });
+    // console.log(user);
+
     // 測試1
     // dataModel.find().exec((err, datas)=>{
     //     res.json(datas);
     // });
 
     // 測試2
-    postModel.find().limit(50).exec(function (err, datas) {
+    // postModel.find().limit(50).exec(function (err, datas) {
+    //     // console.log(docs);
+    //     res.status(200).json({
+    //         status: 'success',
+    //         datas,
+    //     });
+    // });
+
+
+    //測試3
+    postModel.find().limit(50).populate({
+        path: 'user',
+        select: 'name photo'
+    }).exec(function (err, datas) {
         // console.log(docs);
         res.status(200).json({
             status: 'success',
@@ -63,9 +84,30 @@ router.get('/posts', (req, res) => {
 
 // get id
 router.get('/posts/:id', (req, res) => {
-    
+
     const id = req.params.id;
-    postModel.findById(id).exec(function (err, datas) {
+    // 測試1
+    // postModel.findById(id).exec(function (err, datas) {
+    //     // console.log(docs);
+    //     if (!datas) {
+    //         res.status(200).json({
+    //             status: 'success',
+    //             datas,
+    //         });
+    //     } else {
+    //         res.status(401).json({
+    //             status: 'false',
+    //             message: "欄位未填寫正確，或無此 todo ID",
+    //         });
+    //     }
+
+    // });
+
+    // 測試2
+    postModel.findById(id).populate({
+        path: 'user',
+        select: 'name photo'
+    }).exec(function (err, datas) {
         // console.log(docs);
         if (!datas) {
             res.status(200).json({
@@ -78,7 +120,6 @@ router.get('/posts/:id', (req, res) => {
                 message: "欄位未填寫正確，或無此 todo ID",
             });
         }
-
     });
 });
 
@@ -117,12 +158,13 @@ router.post('/posts_1', (req, res) => {
 });
 
 // post_2 with Image Imgur Process
-router.post('/posts',uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
-    console.log(req.body);
-    const properties = ['name', 'tags', 'type', 'image', 'content'];
+router.post('/posts', uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
+    // console.log(req.body);
+    // const properties = ['name', 'tags', 'type', 'image', 'content'];
+    const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
-    obj.image=req.imgFile.link;
+    obj.image = req.imgFile.link;
     var resObj = obj;
     postModel.create(resObj)
         .then((data) => {
@@ -158,7 +200,8 @@ router.post('/posts',uploadMulter.single('image'), refreshToken, uploadImg, (req
 router.patch('/posts/:id', (req, res) => {
     const obj = req.body;
     const keys_1 = Object.keys(obj);
-    const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
+    // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
+    const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
     var resObj = {};
     const id = req.params.id;
     postModel.findByIdAndUpdate(id, resObj)
@@ -184,7 +227,7 @@ router.patch('/posts/:id', (req, res) => {
             }
         })
         .catch(() => {
-            res.status(200).json({
+            res.status(400).json({
                 status: 'false',
                 data: '更新失敗或無此ID',
             })

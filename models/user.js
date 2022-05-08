@@ -3,6 +3,10 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema(
     {
+        name: {
+            type: String,
+            required: [true, '名稱尚未填寫']
+        },
         username: {
             type: String,
             required: [true, '帳號尚未填寫']
@@ -21,11 +25,15 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: 'user',
         },
+        photo: {
+            type: String,
+            default: 'photo',
+        },
         createdAt: {
             type: Date,
             default: Date.now,
             // .find() 時不會顯示，像是隱藏欄位{_id: false}
-            select: false,
+            // select: false,
         }
     },
     {
@@ -88,7 +96,7 @@ userSchema.statics.findByCredentials = async (username, password) => {
     return user
 }
 
-const userModel = mongoose.model('User', userSchema);
+const userModel = mongoose.model('user', userSchema);
 
 
 
