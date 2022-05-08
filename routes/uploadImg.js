@@ -16,9 +16,13 @@ var uploadMulter = multer({
     }
 })
 
-router.post('/uploadImg', uploadMulter.single('file'), uploadImg, (req, res) => {
-    console.log(req.imgFile);
-    res.status(200).json({ status: 'success', data: "欄位未填寫正確，或無此 todo ID" });
+router.post('/uploadImg', uploadMulter.single('image'), uploadImg, (req, res) => {
+    try {
+        const data = req.imgFile;
+        res.status(200).json({ status: 'success', data });
+    } catch {
+        res.status(400).json({ status: 'false', message: '欄位未填寫正確' });
+    }
 });
 
 

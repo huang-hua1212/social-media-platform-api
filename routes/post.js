@@ -177,7 +177,7 @@ router.post('/posts', uploadMulter.single('image'), refreshToken, uploadImg, (re
                 resObj[value] = obj[value];
             })
             if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
+                res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
             } else {
                 res.status(200).json({
                     status: "success",
@@ -217,7 +217,7 @@ router.patch('/posts/:id', (req, res) => {
                 resObj[value] = obj[value];
             })
             if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
+                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
 
             } else {
                 res.status(200).json({
