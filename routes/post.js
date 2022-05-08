@@ -202,7 +202,7 @@ router.patch('/posts/:id', (req, res) => {
     const keys_1 = Object.keys(obj);
     // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
     const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-    var resObj = {};
+    var resObj = obj;
     const id = req.params.id;
     postModel.findByIdAndUpdate(id, resObj)
         .then((result) => {
