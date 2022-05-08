@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const mongoose = require('mongoose');
 const postModel = require('../models/post');
-const userModel = require('../models/user');
+// const userModel = require('../models/user');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 // Temp
@@ -108,8 +108,8 @@ router.get('/posts/:id', (req, res) => {
         path: 'user',
         select: 'name photo'
     }).exec(function (err, datas) {
-        // console.log(docs);
-        if (!datas) {
+        // console.log(datas);
+        if (datas) {
             res.status(200).json({
                 status: 'success',
                 datas,
