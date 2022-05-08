@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: 'user',
         },
+        sex: {
+            type: String,
+            default: '無性別',
+        },
         photo: {
             type: String,
             default: 'photo',

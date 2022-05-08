@@ -27,7 +27,7 @@ router.patch('/user/:id', function (req, res, next) {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-  const properties = ['name', 'username', 'password', 'role', 'photo', 'tokens'];
+  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'tokens'];
   var resObj = {};
   const id = req.params.id;
   userModel.findByIdAndUpdate(id, resObj)
