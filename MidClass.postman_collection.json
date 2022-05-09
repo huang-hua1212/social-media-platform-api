@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "0f394ae0-b2be-4798-84d3-8e2e17e8b5a7",
+		"name": "MidClass",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "取得單筆 User資料",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/user/6277d49f5b11695971e06846",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"6277d49f5b11695971e06846"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新使用者資料(暱稱、照片)-formData",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "FrankSaSa",
+							"type": "text"
+						},
+						{
+							"key": "photo",
+							"type": "file",
+							"src": "Igu9wtxkP/andrii-leonov-P5nZwlbTngI-unsplash.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/user-with-FormDataImage/6277d49f5b11695971e06846",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user-with-FormDataImage",
+						"6277d49f5b11695971e06846"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新使用者資料(暱稱、照片)-URL",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Frank\",\r\n    \"photo\": \"https://i.imgur.com/zpB8erd.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/user/6277d49f5b11695971e06846",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"6277d49f5b11695971e06846"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得所有Po文",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://blooming-sands-85089.herokuapp.com/posts",
+					"protocol": "https",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增Po文",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "6277d49f5b11695971e06846",
+							"type": "text"
+						},
+						{
+							"key": "tags",
+							"value": "生活分享",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "person",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "U796ucdzc/shana-van-roosbroek-Ba2uwbZLx-o-unsplash.png"
+						},
+						{
+							"key": "content",
+							"value": "哈哈哈哈哈呼呼呼呼呼",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts-with-FormDataImage",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts-with-FormDataImage"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Frank",
+							"disabled": true
+						},
+						{
+							"key": "tags",
+							"value": "person",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "生活分享",
+							"disabled": true
+						},
+						{
+							"key": "image",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
