@@ -17,7 +17,7 @@ async function uploadImg(req, res, next) {
     axios.post('https://api.imgur.com/3/image', data, headers).then((result) => { // {"image":encodeImage64}
         const { id, link } = result.data.data;
         req.imgFile = { id, link };
-        console.log(req.imgFile);
+        // console.log(req.imgFile);
         next();
     }).catch(() => {
         res.status(404).json({
