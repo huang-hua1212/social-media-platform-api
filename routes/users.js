@@ -42,7 +42,7 @@ router.get('/user/:id', function (req, res, next) {
 
 
 /* GET users listing. with url image */
-router.patch('/user/:id', async (req, res, next) => {
+router.patch('/user/:id', async function (req, res, next) {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
@@ -50,7 +50,7 @@ router.patch('/user/:id', async (req, res, next) => {
   var resObj = obj;
   const id = req.params.id;
    // // 加密
-   if (resObj.password !== "" || resObj.password !== undefined) {
+   if (resObj.password !== "" && resObj.password !== undefined) {
     resObj.password = await bcrypt.hash(resObj.password, 8)
   }
   userModel.findByIdAndUpdate(id, resObj)
