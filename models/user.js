@@ -47,7 +47,34 @@ const userSchema = new mongoose.Schema(
 )
 
 // 要放在SCHEMA下， API ROUTE之前
-// uerSchema(uesrModel)每次執行save之前都要 加密(hash值)
+// findByIdAndUpdate 不會觸發中間建所以不可以用pre()
+// uerSchema(uesrModel)每次執行save=>for find之前都要 加密(hash值)
+// userSchema.pre('update', async function (next) {
+//     // let update = { ...this.getUpdate() };
+
+//     // // Only run this function if password was modified
+//     // if (update.password) {
+
+//     //     // Hash the password
+//     //     const salt = genSaltSync();
+//     //     update.password = await hash(this.getUpdate().password, salt);
+//     //     this.setUpdate(update);
+//     // }
+
+//     // this 指向目前正被儲存的使用者 document
+//     // console.log("update");
+//     const user = this
+//     // 確認使用者的 password 欄位是有被變更：初次建立＆修改密碼都算
+//     if (user.isModified('password')) {
+//         // 透過 bcrypt 處理密碼，獲得 hashed password
+//         user.password = await bcrypt.hash(user.password, 8)
+//     }
+//     next();
+// })
+
+
+// 要放在SCHEMA下， API ROUTE之前
+// uerSchema(uesrModel)每次執行save=>for model.create()之前都要 加密(hash值)
 userSchema.pre('save', async function (next) {
     // this 指向目前正被儲存的使用者 document
     const user = this
@@ -78,6 +105,13 @@ userSchema.methods.generateAuthToken = async function () {
 
     // 回傳 JWT
     return token
+}
+
+// 加密
+userSchema.methods.encryption = async function () {
+    user.password = await bcrypt.hash(user.password, 8)
+    // 回傳 JWT
+    return user
 }
 
 

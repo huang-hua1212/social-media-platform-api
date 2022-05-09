@@ -1,20 +1,21 @@
 var express = require('express');
 var router = express.Router();
+const bcrypt = require('bcryptjs')
 const userModel = require('../models/user');
 // Temp
 const refreshToken = require('../middleware/file/imgur/refreshToken');
 const uploadImg = require('../middleware/file/imgur/upload');
 var multer = require('multer');
 var uploadMulter = multer({
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true)
-            return
-        } else {
-            cb(null, false)
-            return cb(new Error('Allowed only .png, .jpg, .jpeg'))
-        }
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+      cb(null, true)
+      return
+    } else {
+      cb(null, false)
+      return cb(new Error('Allowed only .png, .jpg, .jpeg'))
     }
+  }
 })
 
 
@@ -39,16 +40,21 @@ router.get('/user/:id', function (req, res, next) {
   });
 });
 
+
 /* GET users listing. with url image */
-router.patch('/user/:id', function (req, res, next) {
+router.patch('/user/:id', async (req, res, next) => {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
   const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'tokens'];
   var resObj = obj;
   const id = req.params.id;
+   // // 加密
+   if (resObj.password !== "" || resObj.password !== undefined) {
+    resObj.password = await bcrypt.hash(resObj.password, 8)
+  }
   userModel.findByIdAndUpdate(id, resObj)
-    .then((result) => {
+    .then(async (result) => {
       var fail = 0;
       if (!result) {
         throw new Error(false);
@@ -59,6 +65,9 @@ router.patch('/user/:id', function (req, res, next) {
         }
         resObj[value] = obj[value];
       })
+
+
+     
       if (fail > 0) {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
 
