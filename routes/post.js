@@ -11,12 +11,12 @@ const uploadImg = require('../middleware/file/imgur/upload');
 var multer = require('multer');
 var uploadMulter = multer({
     fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png") {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
             cb(null, true)
             return
         } else {
             cb(null, false)
-            return cb(new Error('Allowed only .png'))
+            return cb(new Error('Allowed only .png, .jpg, .jpeg'))
         }
     }
 })
