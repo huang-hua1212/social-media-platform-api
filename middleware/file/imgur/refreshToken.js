@@ -4,7 +4,7 @@ dotenv.config({ path: '../../../.env' });
 
 function refreshToken(req, res, next) {
     const data = {
-        refresh_token: '57b8b36436003efbe17e1b0e753233d9d2ed94ca',
+        refresh_token: 'bd5335e7121c49c69ed2f86bbd9cff1f8fc18e98',
         client_id: process.env.IMGUR_CLIENTID,
         client_secret: process.env.IMGUR_CLIENTSECRET,
         grant_type: 'refresh_token',
