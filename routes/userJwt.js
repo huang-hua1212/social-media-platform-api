@@ -36,7 +36,7 @@ router.post('/user/register', async (req, res) => {
         // 從 req.body 獲取驗證資訊，並在資料庫存與該用戶
         const user = await userModel.create(req.body);
 
-        const token = await user.generateAuthToken();
+        // const token = await user.generateAuthToken();
         res.status(201).send({
             status: 'success',
             user
