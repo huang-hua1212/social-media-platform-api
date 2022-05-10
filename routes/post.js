@@ -146,7 +146,7 @@ router.get('/posts-by-userId/:id', (req, res) => {
     // });
 
     // 測試2
-    postModel.find({user: id}).populate({
+    postModel.find({ user: id }).populate({
         path: 'user',
         select: 'name photo'
     }).exec(function (err, datas) {
@@ -159,11 +159,37 @@ router.get('/posts-by-userId/:id', (req, res) => {
         } else {
             res.status(401).json({
                 status: 'false',
-                message: "欄位未填寫正確，或無此 todo ID",
+                message: "欄位未填寫正確，或無此 user ID",
             });
         }
     });
 });
+
+
+// get by regex content
+router.get('/posts-by-content', (req, res) => {
+    const obj = req.body;
+    console.log(obj.content);
+    if (obj['content'] === undefined) {
+        res.status(401).json({
+            status: 'false',
+            message: "欄位未填寫正確",
+        });
+    } else {
+        // const regex = new RegExp('/'+obj['content']+'/');
+        // const reg='/'+obj['content']+'/';
+        postModel.find({ content: { $regex: obj['content'] } }).populate({
+            path: 'user',
+            select: 'name photo'
+        }).exec(function (err, datas) {
+            res.status(200).json({
+                status: 'success',
+                datas,
+            });
+        });
+    }
+})
+
 
 
 // post_1 no Image Process
