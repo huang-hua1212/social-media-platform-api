@@ -167,8 +167,9 @@ router.get('/posts-by-userId/:id', (req, res) => {
 
 
 // get by regex content
-router.get('/posts-by-content', (req, res) => {
+router.post('/posts-by-content', (req, res) => {
     const obj = req.body;
+    console.log(obj);
     console.log(obj.content);
     if (obj['content'] === undefined) {
         res.status(401).json({
