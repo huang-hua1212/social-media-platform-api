@@ -82,7 +82,7 @@ router.get('/posts', async (req, res) => {
 
 
 
-// get id
+// get by postId
 router.get('/posts/:id', (req, res) => {
 
     const id = req.params.id;
@@ -122,6 +122,49 @@ router.get('/posts/:id', (req, res) => {
         }
     });
 });
+
+
+// get by userId
+router.get('/posts-by-userId/:id', (req, res) => {
+
+    const id = req.params.id;
+    // 測試1
+    // postModel.findById(id).exec(function (err, datas) {
+    //     // console.log(docs);
+    //     if (!datas) {
+    //         res.status(200).json({
+    //             status: 'success',
+    //             datas,
+    //         });
+    //     } else {
+    //         res.status(401).json({
+    //             status: 'false',
+    //             message: "欄位未填寫正確，或無此 todo ID",
+    //         });
+    //     }
+
+    // });
+
+    // 測試2
+    postModel.find({user: id}).populate({
+        path: 'user',
+        select: 'name photo'
+    }).exec(function (err, datas) {
+        // console.log(datas);
+        if (datas) {
+            res.status(200).json({
+                status: 'success',
+                datas,
+            });
+        } else {
+            res.status(401).json({
+                status: 'false',
+                message: "欄位未填寫正確，或無此 todo ID",
+            });
+        }
+    });
+});
+
 
 // post_1 no Image Process
 router.post('/posts_1', (req, res) => {
