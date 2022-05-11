@@ -35,14 +35,20 @@ const userSchema = new mongoose.Schema(
         },
         following: [{
             type: mongoose.Schema.ObjectId,
-            ref: "user",
+            ref: "following",
         }],
-        // followers: [{
+        // following: [{
         //     type: mongoose.Schema.ObjectId,
         //     ref: "user",
-        //     createdAt: {
+        // }],
+        // following: [{
+        //     user: {
+        //         type: mongoose.Schema.ObjectId,
+        //         ref: "user",
+        //     },
+        //     followAt: {
         //         type: Date,
-        //         default: Date.now,
+        //         required: [true, '時間尚未填寫']
         //     }
         // }],
         createdAt: {
