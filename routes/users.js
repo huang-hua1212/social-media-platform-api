@@ -29,7 +29,7 @@ router.get('/user/:id', function (req, res, next) {
     select: '_id user whoFollow createdAt updateAt',
     populate: {
       path: 'user',
-      select: 'photo'
+      select: 'name photo'
     }
   }).exec(function (err, datas) {
     // console.log(datas);
