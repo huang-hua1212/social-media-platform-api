@@ -26,7 +26,11 @@ router.get('/user/:id', function (req, res, next) {
 
   userModel.findById(id).populate({
     path: 'following',
-    select: '_id user whoFollow createdAt updateAt'
+    select: '_id user whoFollow createdAt updateAt',
+    populate: {
+      path: 'user',
+      select: 'photo'
+    }
   }).exec(function (err, datas) {
     // console.log(datas);
     if (datas) {
