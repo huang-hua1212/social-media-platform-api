@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: 'photo',
         },
-        following: [{
+        followings: [{
             type: mongoose.Schema.ObjectId,
             ref: "following",
         }],

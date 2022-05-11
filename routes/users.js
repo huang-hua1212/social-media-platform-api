@@ -25,7 +25,7 @@ router.get('/user/:id', function (req, res, next) {
   const id = req.params.id;
 
   userModel.findById(id).populate({
-    path: 'following',
+    path: 'followings',
     select: '_id user whoFollow createdAt updateAt',
     populate: {
       path: 'user',
@@ -54,7 +54,7 @@ router.patch('/user/:id', async function (req, res, next) {
   console.log(obj);
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'following', 'tokens'];
+  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
   var resObj = obj;
   const id = req.params.id;
   // // 加密
@@ -101,7 +101,7 @@ router.patch('/user-with-FormDataImage/:id', uploadMulter.single('photo'), refre
   const obj = req.body;
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'following', 'tokens'];
+  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
   obj.photo = req.imgFile.link;
   var resObj = obj;
   const id = req.params.id;
