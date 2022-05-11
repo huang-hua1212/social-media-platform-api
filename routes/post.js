@@ -193,6 +193,31 @@ router.post('/posts-by-content', (req, res) => {
 
 
 
+// // get by one regex property
+// router.post('/posts-by-property', (req, res) => {
+//     const properties = ['name', 'tags', 'type', 'image', 'content'];
+//     const obj = req.body;
+//     const keys_1 = Object.keys(obj);
+//     var resObj = obj;
+//     const propertyName = keys_1;
+//     postModel.find({ propertyName: { $regex: obj[propertyName] } }).populate({
+//         path: 'user',
+//         select: 'name photo'
+//     }).exec().then((datas) => {
+//         res.status(200).json({
+//             status: 'success',
+//             datas,
+//         });
+//     }).catch((err) => {
+//         res.status(401).json({
+//             status: 'false',
+//             message: "欄位未填寫正確",
+//         });
+//     });
+// })
+
+
+
 // post_1 no Image Process
 router.post('/posts_1', (req, res) => {
     // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];

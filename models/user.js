@@ -33,6 +33,18 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: 'photo',
         },
+        following: [{
+            type: mongoose.Schema.ObjectId,
+            ref: "user",
+        }],
+        // followers: [{
+        //     type: mongoose.Schema.ObjectId,
+        //     ref: "user",
+        //     createdAt: {
+        //         type: Date,
+        //         default: Date.now,
+        //     }
+        // }],
         createdAt: {
             type: Date,
             default: Date.now,
