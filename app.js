@@ -10,6 +10,8 @@ var userVerifyRouter = require('./routes/userJwt');
 var oauthLoginRouter = require('./routes/userOauth2');
 var uploadImgRouter = require('./routes/uploadImg');
 var followingRouter = require('./routes/following');
+var userFollowingRouter = require('./routes/userFollowing');
+
 
 
 var cors = require('cors');
@@ -41,6 +43,7 @@ app.use('/', userVerifyRouter);
 app.use('/', oauthLoginRouter);
 app.use('/', uploadImgRouter);
 app.use('/', followingRouter);
+app.use('/', userFollowingRouter);
 
 
 
