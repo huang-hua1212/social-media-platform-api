@@ -24,7 +24,10 @@ var uploadMulter = multer({
 router.get('/user/:id', function (req, res, next) {
   const id = req.params.id;
 
-  userModel.findById(id).exec(function (err, datas) {
+  userModel.findById(id).populate({
+    path: 'following',
+    select: '_id user whoFollow createdAt updateAt'
+  }).exec(function (err, datas) {
     // console.log(datas);
     if (datas) {
       res.status(200).json({
@@ -50,8 +53,8 @@ router.patch('/user/:id', async function (req, res, next) {
   const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'following', 'tokens'];
   var resObj = obj;
   const id = req.params.id;
-   // // 加密
-   if (resObj.password !== "" && resObj.password !== undefined) {
+  // // 加密
+  if (resObj.password !== "" && resObj.password !== undefined) {
     resObj.password = await bcrypt.hash(resObj.password, 8)
   }
   userModel.findByIdAndUpdate(id, resObj)
@@ -61,7 +64,7 @@ router.patch('/user/:id', async function (req, res, next) {
         throw new Error(false);
       }
       keys_1.forEach((value) => {
-        
+
         if (properties.indexOf(value) === -1) {
           fail += 1;
         }
@@ -69,7 +72,7 @@ router.patch('/user/:id', async function (req, res, next) {
       })
 
 
-     
+
       if (fail > 0) {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
 
