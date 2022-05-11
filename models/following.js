@@ -22,6 +22,6 @@ const followingSchema = new mongoose.Schema(
         timestamps: true,
     }
 )
-const Post = mongoose.model('Following', followingSchema);
+const following = mongoose.model('following', followingSchema);
 
-module.exports = Post
+module.exports = following
