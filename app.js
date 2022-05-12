@@ -11,6 +11,7 @@ var oauthLoginRouter = require('./routes/userOauth2');
 var uploadImgRouter = require('./routes/uploadImg');
 var followingRouter = require('./routes/following');
 var userFollowingRouter = require('./routes/userFollowing');
+var postLikesRouter = require('./routes/postLikes');
 
 
 
@@ -44,6 +45,7 @@ app.use('/', oauthLoginRouter);
 app.use('/', uploadImgRouter);
 app.use('/', followingRouter);
 app.use('/', userFollowingRouter);
+app.use('/', postLikesRouter);
 
 
 

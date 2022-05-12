@@ -26,8 +26,9 @@ mongoose.connect(DB)
     .catch((err) => {
     });
 
+    
 
-
+// 追蹤
 // :id為使用者
 router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
     try {
@@ -46,6 +47,7 @@ router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
 })
 
 
+// 退追蹤
 // :id為userId, userFollowing collection的_id
 router.patch('/userFollowing/:id', async (req, res) => {
     try {
@@ -65,12 +67,6 @@ router.patch('/userFollowing/:id', async (req, res) => {
             console.log(err);
             res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
         });
-        // user.save();
-        // res.status(200).json({
-        //     status: 'success',
-        //     message: "刪除成功",
-        //     data: user,
-        // });
     } catch {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
     }

@@ -57,7 +57,6 @@ router.post('/user/login', async (req, res) => {
     try {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
-        // console.log(user);
         // 為該成功登入之用戶產生 JWT
         const token = await user.generateAuthToken()
         // 只放一個token
