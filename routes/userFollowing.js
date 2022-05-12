@@ -45,12 +45,32 @@ router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
     }
 })
 
+
+// :id為userId, userFollowing collection的_id
 router.delete('/userFollowing/:id', async (req, res) => {
     try {
-        res.status(200).json({
-            status: 'success',
-            data: "刪除成功",
+        const userId = req.params.id;
+        const followingId = req.body._id;
+        const user = await userModel.findOne({ _id: userId });
+        user.followings = await user.followings.filter(following => following !== followingId);
+        console.log(user.followings);
+        await user.save();
+        // const following = await followingModel.findOne({ _id: followingId });
+        followingModel.findByIdAndDelete(followingId).then((data) => {
+            res.status(200).json({
+                status: 'success',
+                message: "刪除成功",
+                data: user,
+            });
+        }).catch(() => {
+            res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
         });
+        // user.save();
+        // res.status(200).json({
+        //     status: 'success',
+        //     message: "刪除成功",
+        //     data: user,
+        // });
     } catch {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
     }
