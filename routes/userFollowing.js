@@ -47,7 +47,7 @@ router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
 
 
 // :id為userId, userFollowing collection的_id
-router.delete('/userFollowing/:id', async (req, res) => {
+router.patch('/userFollowing/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const followingId = req.body._id;
