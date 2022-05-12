@@ -37,16 +37,23 @@ router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
         user.save();
         res.status(200).json({
             status: 'success',
-            data: '更新成功',
+            data: user,
         });
-    } catch(err){
+    } catch (err) {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
 
     }
 })
 
 router.delete('/userFollowing/:id', async (req, res) => {
-
+    try {
+        res.status(200).json({
+            status: 'success',
+            data: "刪除成功",
+        });
+    } catch {
+        res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
+    }
 })
 
 
