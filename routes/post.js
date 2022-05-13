@@ -74,7 +74,7 @@ router.get('/posts', async (req, res) => {
         path: 'user',
         select: 'name photo'
     }).populate({
-        path: 'comment',
+        path: 'commentDetail',
         select: 'user content likes whoLikes createdAt',
         populate: {
             path: 'user',
@@ -110,7 +110,6 @@ router.get('/posts/:id', (req, res) => {
     //             message: "欄位未填寫正確，或無此 todo ID",
     //         });
     //     }
-
     // });
 
 
@@ -120,7 +119,7 @@ router.get('/posts/:id', (req, res) => {
         path: 'user',
         select: 'name photo'
     }).populate({
-        path: 'comment',
+        path: 'commentDetail',
         select: 'user content likes whoLikes createdAt',
         populate: {
             path: 'user',
@@ -169,14 +168,13 @@ router.get('/posts-by-userId/:id', (req, res) => {
         path: 'user',
         select: 'name photo'
     }).populate({
-        path: 'comment',
+        path: 'commentDetail',
         select: 'user content likes whoLikes createdAt',
         populate: {
             path: 'user',
             select: 'name photo'
         }
     }).exec(function (err, datas) {
-        // console.log(datas);
         if (datas) {
             res.status(200).json({
                 status: 'success',
@@ -207,7 +205,7 @@ router.post('/posts-by-content', (req, res) => {
             path: 'user',
             select: 'name photo'
         }).populate({
-            path: 'comment',
+            path: 'commentDetail',
             select: 'user content likes whoLikes createdAt',
             populate: {
                 path: 'user',
