@@ -12,6 +12,7 @@ var uploadImgRouter = require('./routes/uploadImg');
 var followingRouter = require('./routes/following');
 var userFollowingRouter = require('./routes/userFollowing');
 var postLikesRouter = require('./routes/postLikes');
+var commentDetailRouter = require('./routes/commentDetail');
 
 
 
@@ -46,6 +47,7 @@ app.use('/', uploadImgRouter);
 app.use('/', followingRouter);
 app.use('/', userFollowingRouter);
 app.use('/', postLikesRouter);
+app.use('/', commentDetailRouter);
 
 
 

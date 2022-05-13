@@ -1,5 +1,5 @@
 
-const followingModel = require('../models/following');
+const commentDetailModel = require('../models/commentDetail');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
@@ -22,15 +22,18 @@ mongoose.connect(DB)
     });
 
 
-function addNewFollowing(req, res, next) {
+function addNewCommentDetail(req, res, next) {
     const obj = req.body;
-    followingModel.create(obj).then((data) => {
-        const user_Id=data._id.toString();
-        req.followingsUserId=user_Id;
+    commentDetailModel.create(obj).then(data => {
+        console.log(data);
+        const user_Id = data._id.toString();
+        req.commentDetailId = user_Id;
         next();
     }).catch(() => {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
-    });
+    })
 }
 
-module.exports=addNewFollowing
+
+
+module.exports = addNewCommentDetail;

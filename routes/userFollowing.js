@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 const mongoose = require('mongoose');
-const postModel = require('../models/post');
 const followingModel = require('../models/following');
 const userModel = require('../models/user');
 const dotenv = require('dotenv');
@@ -55,7 +54,7 @@ router.patch('/userFollowing/:id', async (req, res) => {
         const followingId = req.body._id;
         const followingObjectId = mongoose.Types.ObjectId(followingId);
         const user = await userModel.findOne({ _id: userId });
-        user.followings = await user.followings.filter( following => following.equals(followingObjectId));
+        user.followings = await user.followings.filter( following => !following.equals(followingObjectId));
         await user.save();
         followingModel.findByIdAndDelete(followingId).then((data) => {
             res.status(200).json({
