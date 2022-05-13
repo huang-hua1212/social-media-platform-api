@@ -59,12 +59,11 @@ router.post('/user/login', async (req, res) => {
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
         // 為該成功登入之用戶產生 JWT
         const token = await user.generateAuthToken()
-        // 只放一個token
+        // 資料庫存所有tokens，但回傳給前端的只放一個使用者申請的token
         user.tokens = [] //[token];
         user.tokens.push({ token });
-
         // 回傳該用戶資訊及 JWT
-        res.status(201).send({
+        res.status(200).send({
             status: 'success',
             user,
         })
