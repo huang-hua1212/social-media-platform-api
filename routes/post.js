@@ -76,6 +76,26 @@ router.get('/posts', async (req, res) => {
             datas,
         });
     });
+
+
+    //測試4
+    // postModel.find().limit(50).populate({
+    //     path: 'user',
+    //     select: 'name photo'
+    // }).populate({
+    //     path: 'commentDetail',
+    //     select: 'user content likes whoLikes createdAt',
+    //     populate: {
+    //         path: 'user',
+    //         select: 'name photo'
+    //     }
+    // }).exec(function (err, datas) {
+    //     // console.log(docs);
+    //     res.status(200).json({
+    //         status: 'success',
+    //         datas,
+    //     });
+    // });
 });
 
 
@@ -104,11 +124,38 @@ router.get('/posts/:id', (req, res) => {
     // });
 
     // 測試2
+    // postModel.findById(id).populate({
+    //     path: 'user',
+    //     select: 'name photo'
+    // }).exec(function (err, datas) {
+    //     // console.log(datas);
+    //     if (datas) {
+    //         res.status(200).json({
+    //             status: 'success',
+    //             datas,
+    //         });
+    //     } else {
+    //         res.status(401).json({
+    //             status: 'false',
+    //             message: "欄位未填寫正確，或無此 todo ID",
+    //         });
+    //     }
+    // });
+
+
+    // 測試3
     postModel.findById(id).populate({
         path: 'user',
         select: 'name photo'
+    }).populate({
+        path: 'commentDetail',
+        select: 'user content likes whoLikes createdAt',
+        populate: {
+            path: 'user',
+            select: 'name photo'
+        }
     }).exec(function (err, datas) {
-        // console.log(datas);
+        console.log(datas);
         if (datas) {
             res.status(200).json({
                 status: 'success',
@@ -121,6 +168,7 @@ router.get('/posts/:id', (req, res) => {
             });
         }
     });
+
 });
 
 

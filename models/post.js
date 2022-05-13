@@ -46,6 +46,10 @@ const postSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
+    commentDetail: [{
+      type: mongoose.Schema.ObjectId,
+      ref: "commentDetail",
+    }]
   }
 )
 const Post = mongoose.model('Post', postSchema);
