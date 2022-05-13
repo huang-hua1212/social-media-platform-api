@@ -75,7 +75,7 @@ router.get('/posts', async (req, res) => {
         select: 'name photo'
     }).populate({
         path: 'commentDetail',
-        select: 'user content likes whoLikes createdAt',
+        select: 'user content likes whoLikes createdAt updatedAt',
         populate: {
             path: 'user',
             select: 'name photo'
