@@ -2,7 +2,9 @@ var express = require("express");
 var router = express.Router();
 const mongoose = require('mongoose');
 const postModel = require('../models/post');
+//要導入，populate才可以使用
 // const userModel = require('../models/user');
+const commentDetail = require('../models/commentDetail');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 // Temp
@@ -66,29 +68,9 @@ router.get('/posts', async (req, res) => {
 
 
     //測試3
-    postModel.find().limit(50).populate({
-        path: 'user',
-        select: 'name photo'
-    }).exec(function (err, datas) {
-        // console.log(docs);
-        res.status(200).json({
-            status: 'success',
-            datas,
-        });
-    });
-
-
-    //測試4
     // postModel.find().limit(50).populate({
     //     path: 'user',
     //     select: 'name photo'
-    // }).populate({
-    //     path: 'commentDetail',
-    //     select: 'user content likes whoLikes createdAt',
-    //     populate: {
-    //         path: 'user',
-    //         select: 'name photo'
-    //     }
     // }).exec(function (err, datas) {
     //     // console.log(docs);
     //     res.status(200).json({
@@ -96,6 +78,25 @@ router.get('/posts', async (req, res) => {
     //         datas,
     //     });
     // });
+
+
+    //測試4
+    postModel.find().limit(50).populate({
+        path: 'user',
+        select: 'name photo'
+    }).populate({
+        path: 'commentDetail',
+        select: 'user content likes whoLikes createdAt',
+        populate: {
+            path: 'user',
+            select: 'name photo'
+        }
+    }).exec(function (err, datas) {
+        res.status(200).json({
+            status: 'success',
+            datas,
+        });
+    });
 });
 
 
@@ -155,7 +156,6 @@ router.get('/posts/:id', (req, res) => {
             select: 'name photo'
         }
     }).exec(function (err, datas) {
-        console.log(datas);
         if (datas) {
             res.status(200).json({
                 status: 'success',
@@ -217,8 +217,6 @@ router.get('/posts-by-userId/:id', (req, res) => {
 // get by regex content
 router.post('/posts-by-content', (req, res) => {
     const obj = req.body;
-    console.log(obj);
-    console.log(obj.content);
     if (obj['content'] === undefined) {
         res.status(401).json({
             status: 'false',
@@ -303,8 +301,6 @@ router.post('/posts_1', (req, res) => {
 
 // post_2 with Image Imgur Process
 router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
-    // console.log(req.body);
-    // const properties = ['name', 'tags', 'type', 'image', 'content'];
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
@@ -340,8 +336,6 @@ router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshTo
 
 // post_3 with Image Imgur Process
 router.post('/posts-with-UrlImage', (req, res) => {
-    // console.log(req.body);
-    // const properties = ['name', 'tags', 'type', 'image', 'content'];
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
