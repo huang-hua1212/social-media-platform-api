@@ -120,7 +120,7 @@ router.get('/posts/:id', (req, res) => {
         path: 'user',
         select: 'name photo'
     }).populate({
-        path: 'commentDetail',
+        path: 'comment_detail',
         select: 'user content likes whoLikes createdAt',
         populate: {
             path: 'user',
@@ -169,7 +169,7 @@ router.get('/posts-by-userId/:id', (req, res) => {
         path: 'user',
         select: 'name photo'
     }).populate({
-        path: 'commentDetail',
+        path: 'comment_detail',
         select: 'user content likes whoLikes createdAt',
         populate: {
             path: 'user',

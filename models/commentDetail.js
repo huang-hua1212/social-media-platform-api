@@ -30,6 +30,6 @@ const commentSchema = new mongoose.Schema(
 )
 
 
-const Comment = mongoose.model('comment_detail', commentSchema);
+const Comment = mongoose.model('commentDetail', commentSchema);
 
 module.exports = Comment
