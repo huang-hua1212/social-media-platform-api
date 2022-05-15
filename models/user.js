@@ -112,7 +112,6 @@ userSchema.methods.generateAuthToken = async function () {
     const payload = {
         _id: user._id.toString(), // 自訂聲明
         iss: user.username,
-
     }
 
     // 產生一組 JWT

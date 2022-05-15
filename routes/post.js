@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const postModel = require('../models/post');
 //要導入，populate才可以使用
 // const userModel = require('../models/user');
-const commentDetail = require('../models/commentDetail');
+const commentDetailModel = require('../models/commentDetail');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 // Temp
@@ -405,8 +405,18 @@ router.delete('/posts', (req, res) => {
 })
 
 // delete id
-router.delete('/posts/:id', (req, res) => {
+router.delete('/posts/:id', async (req, res) => {
     const id = req.params.id;
+    // 測試 START
+    const post = await postModel.findOne({ _id: id });
+    await post.commentDetail.forEach(async (commentId)=>{
+        await commentDetailModel.findByIdAndDelete(commentId).then((result)=>{
+            console.log(result);
+        }).catch((err)=>{
+            throw new Error('Delete commentDetail fail');
+        })
+    });
+    // END
     postModel.findByIdAndDelete(id)
         .then((result) => {
             if (!result) {
