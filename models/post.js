@@ -25,7 +25,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
-    createAt: {
+    createdAt: {
       type: Date,
       default: Date.now,
       // select: false
@@ -50,6 +50,10 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "comment_detail",
     }]
+  },
+  {
+    versionKey: false,
+    timestamps: true,
   }
 )
 const Post = mongoose.model('Post', postSchema);
