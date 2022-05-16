@@ -10,6 +10,7 @@ dotenv.config({ path: './.env' });
 // Temp
 const refreshToken = require('../middleware/file/imgur/refreshToken');
 const uploadImg = require('../middleware/file/imgur/upload');
+const appError = require('../services/appError');
 var multer = require('multer');
 var uploadMulter = multer({
     fileFilter: (req, file, cb) => {
@@ -93,7 +94,7 @@ router.get('/posts', async (req, res) => {
 
 
 // get by postId
-router.get('/posts/:id', (req, res) => {
+router.get('/posts/:id', (req, res, next) => {
 
     const id = req.params.id;
     // 測試1
@@ -132,10 +133,11 @@ router.get('/posts/:id', (req, res) => {
                 datas,
             });
         } else {
-            res.status(401).json({
-                status: 'false',
-                message: "欄位未填寫正確，或無此 todo ID",
-            });
+            return next(appError(400, "欄位未填寫正確", next));
+            // res.status(401).json({
+            //     status: 'false',
+            //     message: "欄位未填寫正確，或無此 todo ID",
+            // });
         }
     });
 
@@ -143,7 +145,7 @@ router.get('/posts/:id', (req, res) => {
 
 
 // get by userId
-router.get('/posts-by-userId/:id', (req, res) => {
+router.get('/posts-by-userId/:id', (req, res, next) => {
 
     const id = req.params.id;
     // 測試1
@@ -181,10 +183,11 @@ router.get('/posts-by-userId/:id', (req, res) => {
                 datas,
             });
         } else {
-            res.status(401).json({
-                status: 'false',
-                message: "欄位未填寫正確，或無此 user ID",
-            });
+            // res.status(401).json({
+            //     status: 'false',
+            //     message: "欄位未填寫正確，或無此 user ID",
+            // });
+            return next(appError(400, "欄位未填寫正確", next));
         }
     });
 });
