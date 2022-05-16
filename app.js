@@ -72,11 +72,19 @@ app.use((req, res, next)=>{
 });
 
 const resErrorProd = (err, res)=>{
-  res.status(err.statusCode).json({
+  if(err.isOperational){
+     res.status(err.statusCode).json({
     message: err.message,
-    error: err,
+    // error: err,
     // stack: err.stack,
   })
+  }else {
+    // 送出罐頭預設訊息
+    res.status(500).json({
+      status: 'error',
+      message: '系統錯誤，請恰系統管理員'
+    });
+  }
 }
 
 // 開發環境錯誤
