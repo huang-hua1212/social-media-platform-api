@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "80445a96-c237-4b0a-87cb-cddf9f550a34",
+		"name": "week5_hw-heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "錯誤捕捉",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ontent\": \"234\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/error",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"error"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "posts-by-userId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts-by-userId/234",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts-by-userId",
+						"234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "posts by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/1234",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"1234"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
