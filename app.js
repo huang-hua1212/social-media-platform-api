@@ -113,6 +113,9 @@ app.use((err, req, res, next)=>{
   resErrorProd(err, res);
 })
 
+
+
+// 'uncaughException'跑來這裡，
 // 500 error handler
 app.use(function (err, req, res, next) {
   // 自訂500錯誤

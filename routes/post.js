@@ -193,9 +193,48 @@ router.get('/posts-by-userId/:id', (req, res, next) => {
 });
 
 
+// get by userId with regex content
+router.post('/posts-by-userId/:id', (req, res, next) => {
+
+    const id = req.params.id;
+    const obj = req.body;
+
+    // 測試2
+    postModel.find({ user: id, content: { $regex: obj['content'] } }).populate({
+        path: 'user',
+        select: 'name photo'
+    }).populate({
+        path: 'commentDetail',
+        select: 'user content likes whoLikes createdAt updatedAt',
+        populate: {
+            path: 'user',
+            select: 'name photo'
+        }
+    }).exec(function (err, datas) {
+        if (datas) {
+            res.status(200).json({
+                status: 'success',
+                datas,
+            });
+        } else {
+            // res.status(401).json({
+            //     status: 'false',
+            //     message: "欄位未填寫正確，或無此 user ID",
+            // });
+            return next(appError(400, "欄位未填寫正確", next));
+        }
+    });
+});
+
+
+
+
+
+
 // get by regex content
 router.post('/posts-by-content', (req, res) => {
     const obj = req.body;
+    console.log(obj.content);
     if (obj['content'] === undefined) {
         res.status(401).json({
             status: 'false',
@@ -251,7 +290,7 @@ router.post('/posts-by-content', (req, res) => {
 
 
 // post_1 no Image Process
-router.post('/posts_1', (req, res) => {
+router.post('/posts_1', (req, res, next) => {
     // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
     const properties = ['name', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
@@ -277,10 +316,11 @@ router.post('/posts_1', (req, res) => {
             }
         })
         .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                data: '新增失敗',
-            })
+            // res.status(200).json({
+            //     status: 'false',
+            //     data: '新增失敗',
+            // })
+            return next(appError(400, "新增失敗", next));
         });
 });
 
@@ -288,7 +328,7 @@ router.post('/posts_1', (req, res) => {
 
 
 // post_2 with Image Imgur Process
-router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
+router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, ( req, res, next) => {
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
@@ -305,7 +345,8 @@ router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshTo
                 resObj[value] = obj[value];
             })
             if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
+                // res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
+                return next(appError(400, "欄位未填寫正確", next));
             } else {
                 res.status(200).json({
                     status: "success",
@@ -314,10 +355,11 @@ router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshTo
             }
         })
         .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                message: '新增失敗',
-            })
+            // res.status(200).json({
+            //     status: 'false',
+            //     message: '新增失敗',
+            // })
+            return next(appError(400, "新增失敗", next));
         });
 });
 
