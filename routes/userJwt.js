@@ -119,6 +119,16 @@ router.post('/user/logout', auth, async (req, res) => {
     }
 })
 
+// oauth登入 = login(findByCredentials+generateAuthToken) + auth(驗證jwt token)
+router.post('/user/auth-check', auth, async (req, res) => {
+    res.status(200).send({
+        status: 'success',
+        token: req.token,
+    })
+})
+
+
+
 
 // oauth登入 = login(findByCredentials+generateAuthToken) + auth(驗證jwt token)
 router.post('/user/login-auth', login, auth, async (req, res) => {
