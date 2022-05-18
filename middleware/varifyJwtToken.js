@@ -14,6 +14,8 @@ module.exports = async (req, res, next) => {
     req.token = token
     // 將用戶完整資料存到 req.user 上供後續使用
     req.user = user
+    // 回傳userId
+    req.userId = decoded._id;
     next()
   } catch (err) {
 

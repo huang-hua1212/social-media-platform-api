@@ -130,6 +130,7 @@ router.post('/user/auth-check', auth, async (req, res) => {
     res.status(200).send({
         status: 'success',
         token: req.token,
+        userId: req.userId,
     })
 })
 
