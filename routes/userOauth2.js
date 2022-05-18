@@ -32,7 +32,8 @@ router.post('/userOauth/register', async (req, res) => {
         // 從 req.body 獲取驗證資訊，並在資料庫存與該用戶
         const user = await userModel.create(req.body);
         
-        const token = await user.generateAuthToken();
+        // const token = await user.generateAuthToken();
+        const [token, expiresIn] = await user.generateAuthToken();
         res.status(201).send({
             status: 'success',
             user
@@ -53,7 +54,8 @@ router.post('/userOauth/login', async (req, res) => {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
         // 為該成功登入之用戶產生 JWT
-        const token = await user.generateAuthToken()
+        // const token = await user.generateAuthToken()
+        const [token, expiresIn] = await user.generateAuthToken();
         // 回傳該用戶資訊及 JWT
         res.status(201).send({
             status: 'success',

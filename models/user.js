@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema(
             token: {
                 type: String,
                 required: true
+            },
+            expiredAt: {
+                type: Date,
+                required: true
             }
         }],
         role: {
@@ -114,14 +118,17 @@ userSchema.methods.generateAuthToken = async function () {
         iss: user.username,
     }
 
+    const EXPIRES_IN =  5*60 * 1000; // 5 min
     // 產生一組 JWT
-    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '1 day' })
+    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: EXPIRES_IN })
+    const expiredAt = new Date(EXPIRES_IN+Date.now());
     // 將該 token 存入資料庫中：讓使用者能跨裝置登入及登出
-    user.tokens = user.tokens.concat({ token })
+    user.tokens = user.tokens.concat({ token, expiredAt})
     await user.save()
 
     // 回傳 JWT
-    return token
+    return [token,  expiredAt]
+    // return token
 }
 
 // 加密

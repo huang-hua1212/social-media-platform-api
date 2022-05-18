@@ -10,7 +10,8 @@ module.exports = async (req, res, next) => {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
         // 為該成功登入之用戶產生 JWT
-        const token = await user.generateAuthToken()
+        // const token = await user.generateAuthToken()
+        const [token, expiresIn] = await user.generateAuthToken();
         // 加個next會跑到之後的function (express框架限定)
         next()
     } catch {

@@ -58,10 +58,13 @@ router.post('/user/login', async (req, res) => {
         // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
         // 為該成功登入之用戶產生 JWT
-        const token = await user.generateAuthToken()
+        const [token, expiredAt] = await user.generateAuthToken();
+        console.log(new Date(expiredAt));
+        // console.log(expiredAt.format("dd/MM/yyyy HH:mm:ss sss"));
+        // const token = await user.generateAuthToken();
         // 資料庫存所有tokens，但回傳給前端的只放一個使用者申請的token
         user.tokens = [] //[token];
-        user.tokens.push({ token });
+        user.tokens.push({ token, expiredAt });
         // 回傳該用戶資訊及 JWT
         // res.status(200).send({
         //     status: 'success',
@@ -70,6 +73,7 @@ router.post('/user/login', async (req, res) => {
         res.status(200).send({
             status: 'success',
             token,
+            token_expiresAt: expiredAt,
         })
     } catch (err) {
         res.status(400).send({
