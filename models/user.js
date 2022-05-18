@@ -55,6 +55,10 @@ const userSchema = new mongoose.Schema(
         //         required: [true, '時間尚未填寫']
         //     }
         // }],
+        likePosts:[{
+            type: mongoose.Schema.ObjectId,
+            ref: "post",
+        }],
         createdAt: {
             type: Date,
             default: Date.now,
