@@ -118,7 +118,7 @@ userSchema.methods.generateAuthToken = async function () {
         iss: user.username,
     }
 
-    const EXPIRES_IN =  5*60 * 1000; // 5 min
+    const EXPIRES_IN =  24*60*60 * 1000; // 1 day
     // 產生一組 JWT
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: EXPIRES_IN })
     const expiredAt = new Date(EXPIRES_IN+Date.now());
