@@ -54,7 +54,7 @@ router.patch('/user/:id', async function (req, res, next) {
   console.log(obj);
   const keys_1 = Object.keys(obj);
   // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
+  const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens', 'likePosts'];
   var resObj = obj;
   const id = req.params.id;
   // // 加密
@@ -96,7 +96,7 @@ router.patch('/user/:id', async function (req, res, next) {
 });
 
 
-/* GET users listing. with url image */
+/* GET users listing. with FormData image */
 router.patch('/user-with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, function (req, res, next) {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
