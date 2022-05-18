@@ -57,7 +57,7 @@ const userSchema = new mongoose.Schema(
         // }],
         likePosts:[{
             type: mongoose.Schema.ObjectId,
-            ref: "post",
+            ref: "Post",
         }],
         createdAt: {
             type: Date,
