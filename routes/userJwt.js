@@ -63,9 +63,13 @@ router.post('/user/login', async (req, res) => {
         user.tokens = [] //[token];
         user.tokens.push({ token });
         // 回傳該用戶資訊及 JWT
+        // res.status(200).send({
+        //     status: 'success',
+        //     user,
+        // })
         res.status(200).send({
             status: 'success',
-            user,
+            token,
         })
     } catch (err) {
         res.status(400).send({
