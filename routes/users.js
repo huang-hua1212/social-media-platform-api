@@ -34,8 +34,11 @@ router.get('/user/:id', function (req, res, next) {
   }).populate({
     path: 'likePosts',
     select: '_id user image content createdAt updateAt',
+    populate: {
+      path: 'user',
+      select: 'name photo'
+    }
   }).exec(function (err, datas) {
-    // console.log(datas);
     if (datas) {
       res.status(200).json({
         status: 'success',
@@ -56,7 +59,6 @@ router.patch('/user/:id', async function (req, res, next) {
   const obj = req.body;
   console.log(obj);
   const keys_1 = Object.keys(obj);
-  // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
   const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens', 'likePosts'];
   var resObj = obj;
   const id = req.params.id;
@@ -103,7 +105,6 @@ router.patch('/user/:id', async function (req, res, next) {
 router.patch('/user-with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, function (req, res, next) {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
-  // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
   const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
   obj.photo = req.imgFile.link;
   var resObj = obj;
