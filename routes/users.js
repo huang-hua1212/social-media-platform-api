@@ -31,6 +31,9 @@ router.get('/user/:id', function (req, res, next) {
       path: 'user',
       select: 'name photo'
     }
+  }).populate({
+    path: 'likePosts',
+    select: '_id user image content createdAt updateAt',
   }).exec(function (err, datas) {
     // console.log(datas);
     if (datas) {
