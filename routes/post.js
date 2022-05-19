@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const mongoose = require('mongoose');
 const postModel = require('../models/post');
 //要導入，populate才可以使用
 // const userModel = require('../models/user');
@@ -78,7 +77,7 @@ router.get('/posts', async (req, res) => {
 
 
 // get by postId
-router.get('/posts/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
 
     const id = req.params.id;
     // 測試1
@@ -129,7 +128,7 @@ router.get('/posts/:id', (req, res, next) => {
 
 
 // get by userId
-router.get('/posts-by-userId/:id', (req, res, next) => {
+router.get('/by-userId/:id', (req, res, next) => {
 
     const id = req.params.id;
     // 測試1
@@ -178,7 +177,7 @@ router.get('/posts-by-userId/:id', (req, res, next) => {
 
 
 // get by userId with regex content
-router.post('/posts-by-userId/:id', (req, res, next) => {
+router.post('/by-userId/:id', (req, res, next) => {
 
     const id = req.params.id;
     const obj = req.body;
@@ -216,7 +215,7 @@ router.post('/posts-by-userId/:id', (req, res, next) => {
 
 
 // get by regex content
-router.post('/posts-by-content', (req, res) => {
+router.post('/by-content', (req, res) => {
     const obj = req.body;
     console.log(obj.content);
     if (obj['content'] === undefined) {
@@ -273,40 +272,40 @@ router.post('/posts-by-content', (req, res) => {
 
 
 
-// post_1 no Image Process
-router.post('/posts_1', (req, res, next) => {
-    // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-    const properties = ['name', 'tags', 'type', 'image', 'content'];
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    var resObj = obj;
-    postModel.create(resObj)
-        .then((data) => {
-            resObj = {};
-            var fail = 0;
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
-            } else {
-                res.status(200).json({
-                    status: "success",
-                    data,
-                });
-            }
-        })
-        .catch(() => {
-            // res.status(200).json({
-            //     status: 'false',
-            //     data: '新增失敗',
-            // })
-            return next(appError(400, "新增失敗", next));
-        });
-});
+// // post_1 no Image Process
+// router.post('/posts_1', (req, res, next) => {
+//     // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
+//     const properties = ['name', 'tags', 'type', 'image', 'content'];
+//     const obj = req.body;
+//     const keys_1 = Object.keys(obj);
+//     var resObj = obj;
+//     postModel.create(resObj)
+//         .then((data) => {
+//             resObj = {};
+//             var fail = 0;
+//             keys_1.forEach((value) => {
+//                 if (properties.indexOf(value) === -1) {
+//                     fail += 1;
+//                 }
+//                 resObj[value] = obj[value];
+//             })
+//             if (fail > 0) {
+//                 res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
+//             } else {
+//                 res.status(200).json({
+//                     status: "success",
+//                     data,
+//                 });
+//             }
+//         })
+//         .catch(() => {
+//             // res.status(200).json({
+//             //     status: 'false',
+//             //     data: '新增失敗',
+//             // })
+//             return next(appError(400, "新增失敗", next));
+//         });
+// });
 
 
 
@@ -349,7 +348,7 @@ router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshTo
 
 
 // post_3 with Image Imgur Process
-router.post('/posts-with-UrlImage', (req, res) => {
+router.post('/posts/with-UrlImage', (req, res) => {
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);

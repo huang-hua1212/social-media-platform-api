@@ -54,7 +54,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/', usersRouter);
-app.use('/', postRouter);
+app.use('/posts', postRouter);
 app.use('/', userVerifyRouter);
 app.use('/', oauthLoginRouter);
 app.use('/', uploadImgRouter);
