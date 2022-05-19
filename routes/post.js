@@ -28,7 +28,7 @@ var uploadMulter = multer({
 
 
 //get all
-router.get('/posts', async (req, res) => {
+router.get('', async (req, res) => {
     // 找到關聯user資料 populate
     // const user = await postModel.find().populate({
     //     path: 'user',
@@ -311,7 +311,7 @@ router.post('/by-content', (req, res) => {
 
 
 // post_2 with Image Imgur Process
-router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, ( req, res, next) => {
+router.post('/with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, ( req, res, next) => {
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
@@ -348,7 +348,7 @@ router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshTo
 
 
 // post_3 with Image Imgur Process
-router.post('/posts/with-UrlImage', (req, res) => {
+router.post('/with-UrlImage', (req, res) => {
     const properties = ['user', 'tags', 'type', 'image', 'content'];
     const obj = req.body;
     const keys_1 = Object.keys(obj);
@@ -385,7 +385,7 @@ router.post('/posts/with-UrlImage', (req, res) => {
 
 
 // patch
-router.patch('/posts/:id', (req, res) => {
+router.patch('/:id', (req, res) => {
     const obj = req.body;
     const keys_1 = Object.keys(obj);
     // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
@@ -423,7 +423,7 @@ router.patch('/posts/:id', (req, res) => {
 })
 
 // delete all
-router.delete('/posts', (req, res) => {
+router.delete('', (req, res) => {
     postModel.deleteMany({}, () => {
         res.status(200).json({
             status: 'success',
@@ -433,7 +433,7 @@ router.delete('/posts', (req, res) => {
 })
 
 // delete id
-router.delete('/posts/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     // 測試 START
     const post = await postModel.findOne({ _id: id });
