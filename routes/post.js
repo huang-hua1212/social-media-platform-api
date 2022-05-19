@@ -26,22 +26,6 @@ var uploadMulter = multer({
 
 
 
-// 連結
-const DB = process.env.DATABASE
-    .replace(
-        '<username>',
-        process.env.DATABASE_USERNAME
-    )
-    .replace(
-        '<password>',
-        process.env.DATABASE_PASSWORD
-    )
-mongoose.connect(DB)
-    .then((res) => {
-    })
-    .catch((err) => {
-    });
-
 
 
 //get all

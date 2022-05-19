@@ -1,14 +1,6 @@
-var mysql = require('mysql');
-
 var jwt = require('jsonwebtoken');  // JWT 簽名和驗證
 var conf = require('../conf');
 const userModel = require('../models/user.js');
-
-var connection = mysql.createConnection(conf.db);
-var tableName = 'accounts';
-var sql;
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
 function login(req) {
@@ -49,7 +41,6 @@ module.exports = {
                 error: err.message
             })
         }
-        // return connection.query(sql, callback);
     },
     // 產生 OAuth 2.0 和 JWT 的 JSON 格式令牌訊息
     // mongodb

@@ -1,4 +1,5 @@
 var createError = require('http-errors');
+const dotenv = require('dotenv');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -18,6 +19,8 @@ var cors = require('cors');
 // swagger
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json') // 剛剛輸出的 JSON
+
+dotenv.config({ path: './.env' });
 
 // 有沒有寫錯程式碼
 //　記錄錯誤，等到服務都處理完後，停掉該ｐｒｏｃｅｓｓ

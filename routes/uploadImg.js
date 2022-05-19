@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var uploadImg = require('../middleware/file/imgur/upload');
-// var uploadImgTest = require('../middleware/uploadTest');
 
 var multer = require('multer');
 var uploadMulter = multer({
