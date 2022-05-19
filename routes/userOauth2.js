@@ -1,24 +1,10 @@
 var express = require("express");
-var mongoose = require("mongoose");
 const userModel = require('../models/user.js');
 const auth = require('../middleware/varifyJwtToken');
 const login = require('../middleware/login');
 var router = express.Router();
 
-const DB = process.env.DATABASE
-    .replace(
-        '<username>',
-        process.env.DATABASE_USERNAME
-    )
-    .replace(
-        '<password>',
-        process.env.DATABASE_PASSWORD
-    )
-mongoose.connect(DB)
-    .then(() => {
-    })
-    .catch(() => {
-    });
+
 
 
 

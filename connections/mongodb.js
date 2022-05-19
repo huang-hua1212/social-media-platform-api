@@ -11,9 +11,12 @@ const DB = process.env.DATABASE
         process.env.DATABASE_PASSWORD
     )
 mongoose.connect(DB)
-    .then((res) => {
-    })
+    .then(() => {})
     .catch((err) => {
+        res.status(400).json({
+            status: 'error',
+            message: '連結失敗',
+        });
     });
 
 module.exports = mongoose;
