@@ -15,6 +15,7 @@ var userFollowingRouter = require('./routes/userFollowing');
 var postLikesRouter = require('./routes/postLikes');
 var commentDetailRouter = require('./routes/commentDetail');
 var errorRouter = require('./routes/week5_HW');
+var pcloudRouter = require('./routes/fileCloudStorage');
 var cors = require('cors');
 // swagger
 const swaggerUi = require('swagger-ui-express')
@@ -53,7 +54,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/', usersRouter);
+app.use('/users', usersRouter);
 app.use('/posts', postRouter);
 app.use('/', userVerifyRouter);
 app.use('/', oauthLoginRouter);
@@ -63,6 +64,8 @@ app.use('/', userFollowingRouter);
 app.use('/', postLikesRouter);
 app.use('/', commentDetailRouter);
 app.use('/', errorRouter);
+app.use('/fileCloudStorage', pcloudRouter);
+
 
 // swagger
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))

@@ -21,7 +21,7 @@ var uploadMulter = multer({
 
 
 /* GET users BY id */
-router.get('/user/:id', function (req, res, next) {
+router.get('/:id', function (req, res, next) {
   const id = req.params.id;
 
   userModel.findById(id).populate({
@@ -55,7 +55,7 @@ router.get('/user/:id', function (req, res, next) {
 
 
 /* patch users listing. with url image */
-router.patch('/user/:id', async function (req, res, next) {
+router.patch('/:id', async function (req, res, next) {
   const obj = req.body;
   console.log(obj);
   const keys_1 = Object.keys(obj);
@@ -102,7 +102,7 @@ router.patch('/user/:id', async function (req, res, next) {
 
 
 /* GET users listing. with FormData image */
-router.patch('/user-with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, function (req, res, next) {
+router.patch('/with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, function (req, res, next) {
   const obj = req.body;
   const keys_1 = Object.keys(obj);
   const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
