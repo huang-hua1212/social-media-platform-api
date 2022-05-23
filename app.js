@@ -15,7 +15,7 @@ var userFollowingRouter = require('./routes/userFollowing');
 var postLikesRouter = require('./routes/postLikes');
 var commentDetailRouter = require('./routes/commentDetail');
 var errorRouter = require('./routes/week5_HW');
-var pcloudRouter = require('./routes/fileCloudStorage');
+var fileCloudRouter = require('./routes/fileCloudStorage');
 var cors = require('cors');
 // swagger
 const swaggerUi = require('swagger-ui-express')
@@ -64,7 +64,7 @@ app.use('/', userFollowingRouter);
 app.use('/', postLikesRouter);
 app.use('/', commentDetailRouter);
 app.use('/', errorRouter);
-app.use('/fileCloudStorage', pcloudRouter);
+app.use('/fileCloudStorage', fileCloudRouter);
 
 
 // swagger
