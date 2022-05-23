@@ -1,7 +1,7 @@
 var multer = require('multer');
 const postModel = require('../models/post');
 
-const post = {
+const posts = {
     getAll: async (req, res) => {
         postModel.find().limit(50).populate({
             path: 'user',
@@ -244,4 +244,4 @@ const post = {
 }
 
 
-module.exports = post;
+module.exports = posts;
