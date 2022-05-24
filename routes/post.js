@@ -5,7 +5,10 @@ const postModel = require('../models/post');
 // const userModel = require('../models/user');
 const commentDetailModel = require('../models/commentDetail');
 const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
+const postController = require('../controller/posts');
+dotenv.config({
+    path: './.env'
+});
 // Temp
 const refreshToken = require('../middleware/file/imgur/refreshToken');
 const uploadImg = require('../middleware/file/imgur/upload');
@@ -25,224 +28,34 @@ var uploadMulter = multer({
 
 
 
-
-
 //get all
 router.get('', async (req, res) => {
-    // 找到關聯user資料 populate
-    // const user = await postModel.find().populate({
-    //     path: 'user',
-    //     select: 'name photo'
-    // });
-    // console.log(user);
-
-    // 測試1
-    // dataModel.find().exec((err, datas)=>{
-    //     res.json(datas);
-    // });
-
-    // 測試2
-    // postModel.find().limit(50).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     res.status(200).json({
-    //         status: 'success',
-    //         datas,
-    //     });
-    // });
-
-
-
-
-    //測試3
-    postModel.find().limit(50).populate({
-        path: 'user',
-        select: 'name photo'
-    }).populate({
-        path: 'commentDetail',
-        select: 'user content likes whoLikes createdAt updatedAt',
-        populate: {
-            path: 'user',
-            select: 'name photo'
-        }
-    }).exec(function (err, datas) {
-        res.status(200).json({
-            status: 'success',
-            datas,
-        });
-    });
+    postController.getAll(req, res);
 });
-
-
 
 
 
 // get by postId
 router.get('/:id', (req, res, next) => {
-
-    const id = req.params.id;
-    // 測試1
-    // postModel.findById(id).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     if (!datas) {
-    //         res.status(200).json({
-    //             status: 'success',
-    //             datas,
-    //         });
-    //     } else {
-    //         res.status(401).json({
-    //             status: 'false',
-    //             message: "欄位未填寫正確，或無此 todo ID",
-    //         });
-    //     }
-    // });
-
-
-
-    // 測試2
-    postModel.findById(id).populate({
-        path: 'user',
-        select: 'name photo'
-    }).populate({
-        path: 'commentDetail',
-        select: 'user content likes whoLikes createdAt updatedAt',
-        populate: {
-            path: 'user',
-            select: 'name photo'
-        }
-    }).exec(function (err, datas) {
-        if (datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        } else {
-            return next(appError(400, "欄位未填寫正確", next));
-            // res.status(401).json({
-            //     status: 'false',
-            //     message: "欄位未填寫正確，或無此 todo ID",
-            // });
-        }
-    });
-
+    postController.getPostByPostId(req, res);
 });
 
 
 // get by userId
 router.get('/by-userId/:id', (req, res, next) => {
-
-    const id = req.params.id;
-    // 測試1
-    // postModel.findById(id).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     if (!datas) {
-    //         res.status(200).json({
-    //             status: 'success',
-    //             datas,
-    //         });
-    //     } else {
-    //         res.status(401).json({
-    //             status: 'false',
-    //             message: "欄位未填寫正確，或無此 todo ID",
-    //         });
-    //     }
-
-    // });
-
-    // 測試2
-    postModel.find({ user: id }).populate({
-        path: 'user',
-        select: 'name photo'
-    }).populate({
-        path: 'commentDetail',
-        select: 'user content likes whoLikes createdAt updatedAt',
-        populate: {
-            path: 'user',
-            select: 'name photo'
-        }
-    }).exec(function (err, datas) {
-        if (datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        } else {
-            // res.status(401).json({
-            //     status: 'false',
-            //     message: "欄位未填寫正確，或無此 user ID",
-            // });
-            return next(appError(400, "欄位未填寫正確", next));
-        }
-    });
+    postController.getPostByUserId(req, res);
 });
 
 
 // get by userId with regex content
 router.post('/by-userId/:id', (req, res, next) => {
-
-    const id = req.params.id;
-    const obj = req.body;
-
-    // 測試2
-    postModel.find({ user: id, content: { $regex: obj['content'] } }).populate({
-        path: 'user',
-        select: 'name photo'
-    }).populate({
-        path: 'commentDetail',
-        select: 'user content likes whoLikes createdAt updatedAt',
-        populate: {
-            path: 'user',
-            select: 'name photo'
-        }
-    }).exec(function (err, datas) {
-        if (datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        } else {
-            // res.status(401).json({
-            //     status: 'false',
-            //     message: "欄位未填寫正確，或無此 user ID",
-            // });
-            return next(appError(400, "欄位未填寫正確", next));
-        }
-    });
+    postController.postRegexContentSearchPostUnderPosId(req, res);
 });
-
-
-
-
 
 
 // get by regex content
 router.post('/by-content', (req, res) => {
-    const obj = req.body;
-    console.log(obj.content);
-    if (obj['content'] === undefined) {
-        res.status(401).json({
-            status: 'false',
-            message: "欄位未填寫正確",
-        });
-    } else {
-        // const regex = new RegExp('/'+obj['content']+'/');
-        // const reg='/'+obj['content']+'/';
-        postModel.find({ content: { $regex: obj['content'] } }).populate({
-            path: 'user',
-            select: 'name photo'
-        }).populate({
-            path: 'commentDetail',
-            select: 'user content likes whoLikes createdAt updatedAt',
-            populate: {
-                path: 'user',
-                select: 'name photo'
-            }
-        }).exec(function (err, datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        });
-    }
+    postController.postRegexContentSearchPost(req, res);
 })
 
 
@@ -311,39 +124,40 @@ router.post('/by-content', (req, res) => {
 
 
 // post_2 with Image Imgur Process
-router.post('/with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, ( req, res, next) => {
-    const properties = ['user', 'tags', 'type', 'image', 'content'];
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    obj.image = req.imgFile.link;
-    var resObj = obj;
-    postModel.create(resObj)
-        .then((data) => {
-            resObj = {};
-            var fail = 0;
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                // res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
-                return next(appError(400, "欄位未填寫正確", next));
-            } else {
-                res.status(200).json({
-                    status: "success",
-                    data,
-                });
-            }
-        })
-        .catch(() => {
-            // res.status(200).json({
-            //     status: 'false',
-            //     message: '新增失敗',
-            // })
-            return next(appError(400, "新增失敗", next));
-        });
+router.post('/with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res, next) => {
+    postController.postFormDataAddNewPost(req, res);
+    // const properties = ['user', 'tags', 'type', 'image', 'content'];
+    // const obj = req.body;
+    // const keys_1 = Object.keys(obj);
+    // obj.image = req.imgFile.link;
+    // var resObj = obj;
+    // postModel.create(resObj)
+    //     .then((data) => {
+    //         resObj = {};
+    //         var fail = 0;
+    //         keys_1.forEach((value) => {
+    //             if (properties.indexOf(value) === -1) {
+    //                 fail += 1;
+    //             }
+    //             resObj[value] = obj[value];
+    //         })
+    //         if (fail > 0) {
+    //             // res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
+    //             return next(appError(400, "欄位未填寫正確", next));
+    //         } else {
+    //             res.status(200).json({
+    //                 status: "success",
+    //                 data,
+    //             });
+    //         }
+    //     })
+    //     .catch(() => {
+    //         // res.status(200).json({
+    //         //     status: 'false',
+    //         //     message: '新增失敗',
+    //         // })
+    //         return next(appError(400, "新增失敗", next));
+    //     });
 });
 
 
@@ -365,7 +179,10 @@ router.post('/with-UrlImage', (req, res) => {
                 resObj[value] = obj[value];
             })
             if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
+                res.status(400).json({
+                    status: 'false',
+                    message: "欄位未填寫正確"
+                });
             } else {
                 res.status(200).json({
                     status: "success",
@@ -405,7 +222,10 @@ router.patch('/:id', (req, res) => {
                 resObj[value] = obj[value];
             })
             if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
+                res.status(400).json({
+                    status: 'false',
+                    message: "欄位未填寫正確，或無此 ID"
+                });
 
             } else {
                 res.status(200).json({
@@ -436,11 +256,13 @@ router.delete('', (req, res) => {
 router.delete('/:id', async (req, res) => {
     const id = req.params.id;
     // 測試 START
-    const post = await postModel.findOne({ _id: id });
-    await post.commentDetail.forEach(async (commentId)=>{
-        await commentDetailModel.findByIdAndDelete(commentId).then((result)=>{
+    const post = await postModel.findOne({
+        _id: id
+    });
+    await post.commentDetail.forEach(async (commentId) => {
+        await commentDetailModel.findByIdAndDelete(commentId).then((result) => {
             console.log(result);
-        }).catch((err)=>{
+        }).catch((err) => {
             throw new Error('Delete commentDetail fail');
         })
     });

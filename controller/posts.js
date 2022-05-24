@@ -20,7 +20,7 @@ const posts = {
             });
         });
     },
-    getPostByPostId: (req, res) => {
+    getPostByPostId:async (req, res) => {
         const id = req.params.id;
 
         postModel.findById(id).populate({
@@ -44,7 +44,7 @@ const posts = {
             }
         });
     },
-    getPostByUserId: (req, res) => {
+    getPostByUserId:async(req, res) => {
         const id = req.params.id;
 
         postModel.find({
@@ -70,7 +70,33 @@ const posts = {
             }
         });
     },
-    postRegexContentSearchPost: () => {
+    postRegexContentSearchPostUnderPosId: async(req, res)=>{
+        const id = req.params.id;
+        const obj = req.body;
+    
+        // 測試2
+        postModel.find({ user: id, content: { $regex: obj['content'] } }).populate({
+            path: 'user',
+            select: 'name photo'
+        }).populate({
+            path: 'commentDetail',
+            select: 'user content likes whoLikes createdAt updatedAt',
+            populate: {
+                path: 'user',
+                select: 'name photo'
+            }
+        }).exec(function (err, datas) {
+            if (datas) {
+                res.status(200).json({
+                    status: 'success',
+                    datas,
+                });
+            } else {
+                return next(appError(400, "欄位未填寫正確", next));
+            }
+        });
+    },
+    postRegexContentSearchPost:async (req, res) => {
         const obj = req.body;
         if (obj['content'] === undefined) {
             return next(appError(400, "欄位未填寫正確", next));
@@ -101,7 +127,7 @@ const posts = {
             });
         }
     },
-    postFormDataAddNewPost: (req, res) => {
+    postFormDataAddNewPost: async(req, res) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -131,7 +157,7 @@ const posts = {
                 return next(appError(400, "新增失敗", next));
             });
     },
-    postUrlAddNewPost: (req, res) => {
+    postUrlAddNewPost: async(req, res) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -167,7 +193,7 @@ const posts = {
                 })
             });
     },
-    patchPost: (req, res) => {
+    patchPost:async (req, res) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
@@ -203,7 +229,7 @@ const posts = {
                 })
             });
     },
-    deleteAll: (req, res) => {
+    deleteAll: async(req, res) => {
         postModel.deleteMany({}, () => {
             res.status(200).json({
                 status: 'success',
@@ -211,7 +237,7 @@ const posts = {
             })
         });
     },
-    deletePostByPostId: (req, res) => {
+    deletePostByPostId: async(req, res) => {
         const id = req.params.id;
         const post = await postModel.findOne({
             _id: id
