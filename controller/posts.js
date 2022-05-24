@@ -1,5 +1,9 @@
 var multer = require('multer');
+const mongoose = require('mongoose');
 const postModel = require('../models/post');
+const userModel = require('../models/user');
+const commentDetailModel = require('../models/commentDetail');
+
 
 const posts = {
     getAll: async (req, res) => {
@@ -20,7 +24,7 @@ const posts = {
             });
         });
     },
-    getPostByPostId:async (req, res) => {
+    getPostByPostId: async (req, res) => {
         const id = req.params.id;
 
         postModel.findById(id).populate({
@@ -44,7 +48,7 @@ const posts = {
             }
         });
     },
-    getPostByUserId:async(req, res) => {
+    getPostByUserId: async (req, res) => {
         const id = req.params.id;
 
         postModel.find({
@@ -70,12 +74,17 @@ const posts = {
             }
         });
     },
-    postRegexContentSearchPostUnderPosId: async(req, res)=>{
+    postRegexContentSearchPostUnderPosId: async (req, res) => {
         const id = req.params.id;
         const obj = req.body;
-    
+
         // 測試2
-        postModel.find({ user: id, content: { $regex: obj['content'] } }).populate({
+        postModel.find({
+            user: id,
+            content: {
+                $regex: obj['content']
+            }
+        }).populate({
             path: 'user',
             select: 'name photo'
         }).populate({
@@ -96,7 +105,7 @@ const posts = {
             }
         });
     },
-    postRegexContentSearchPost:async (req, res) => {
+    postRegexContentSearchPost: async (req, res) => {
         const obj = req.body;
         if (obj['content'] === undefined) {
             return next(appError(400, "欄位未填寫正確", next));
@@ -127,7 +136,7 @@ const posts = {
             });
         }
     },
-    postFormDataAddNewPost: async(req, res) => {
+    postFormDataAddNewPost: async (req, res) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -157,7 +166,7 @@ const posts = {
                 return next(appError(400, "新增失敗", next));
             });
     },
-    postUrlAddNewPost: async(req, res) => {
+    postUrlAddNewPost: async (req, res) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -187,13 +196,14 @@ const posts = {
                 }
             })
             .catch(() => {
-                res.status(200).json({
-                    status: 'false',
-                    message: '新增失敗',
-                })
+                // res.status(200).json({
+                //     status: 'false',
+                //     message: '新增失敗',
+                // })
+                return next(appError(400, "新增失敗", next));
             });
     },
-    patchPost:async (req, res) => {
+    patchPost: async (req, res) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
@@ -223,13 +233,10 @@ const posts = {
                 }
             })
             .catch(() => {
-                res.status(400).json({
-                    status: 'false',
-                    data: '更新失敗或無此ID',
-                })
+                return next(appError(400, "更新失敗", next));
             });
     },
-    deleteAll: async(req, res) => {
+    deleteAll: async (req, res) => {
         postModel.deleteMany({}, () => {
             res.status(200).json({
                 status: 'success',
@@ -237,11 +244,12 @@ const posts = {
             })
         });
     },
-    deletePostByPostId: async(req, res) => {
+    deletePostByPostId: async (req, res) => {
         const id = req.params.id;
         const post = await postModel.findOne({
             _id: id
         });
+        // 刪除commentDetail的紀錄
         await post.commentDetail.forEach(async (commentId) => {
             await commentDetailModel.findByIdAndDelete(commentId).then((result) => {
                 console.log(result);
@@ -249,6 +257,17 @@ const posts = {
                 throw new Error('Delete commentDetail fail');
             })
         });
+
+        // 刪除user端的likePosts記錄
+        const postObjectId = mongoose.Types.ObjectId(id);
+        await post.whoLikes.forEach(async (userId) => {
+            const user = await userModel.findOne({
+                _id: userId
+            });
+            user.likePosts = await user.likePosts.filter(likePostId => !likePostId.equals(postObjectId));
+            await user.save();
+        });
+
         postModel.findByIdAndDelete(id)
             .then((result) => {
                 if (!result) {
@@ -261,10 +280,7 @@ const posts = {
                 }
             })
             .catch(() => {
-                res.status(200).json({
-                    status: 'false',
-                    data: '刪除失敗或無此ID',
-                })
+                return next(appError(400, "刪除失敗", next));
             });
     }
 }
