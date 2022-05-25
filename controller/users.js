@@ -4,7 +4,7 @@ const appError = require('../services/appError');
 
 
 const users = {
-    getUserByUserId: (req, res) => {
+    getUserByUserId: async (req, res, next) => {
         const id = req.params.id;
 
         userModel.findById(id).populate({
@@ -28,15 +28,11 @@ const users = {
                     datas,
                 });
             } else {
-                // res.status(400).json({
-                //   status: 'false',
-                //   message: "欄位未填寫正確，或無此 ID",
-                // });
                 return next(appError(400, "欄位未填寫正確", next));
             }
         });
     },
-    patchUserWithUrlImg: (req, res) => {
+    patchUserWithUrlImg: async (req, res, next) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens', 'likePosts'];
@@ -72,15 +68,10 @@ const users = {
                 }
             })
             .catch(() => {
-                // res.status(400).json({
-                //     status: 'false',
-                //     data: '更新失敗或無此ID',
-                // })
                 return next(appError(400, "欄位未填寫正確", next));
-
             });
     },
-    patchUserWithFormDataImg: (req, res) => {
+    patchUserWithFormDataImg: async  (req, res, next) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
@@ -101,10 +92,6 @@ const users = {
                     resObj[value] = obj[value];
                 })
                 if (fail > 0) {
-                    // res.status(400).json({
-                    //     status: 'false',
-                    //     message: "欄位未填寫正確，或無此 ID"
-                    // });
                     return next(appError(400, "欄位未填寫正確", next));
 
                 } else {
@@ -115,10 +102,6 @@ const users = {
                 }
             })
             .catch(() => {
-                // res.status(400).json({
-                //     status: 'false',
-                //     data: '更新失敗或無此ID',
-                // })
                 return next(appError(400, "欄位未填寫正確", next));
             });
     },

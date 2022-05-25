@@ -1,11 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const dotenv = require('dotenv');
-const postController = require('../controller/posts');
-dotenv.config({
-    path: './.env'
-});
-// Temp
+const postsController = require('../controller/posts');
 const refreshToken = require('../middleware/file/imgur/refreshToken');
 const uploadImg = require('../middleware/file/imgur/upload');
 var multer = require('multer');
@@ -23,62 +18,62 @@ var uploadMulter = multer({
 
 
 //get all
-router.get('', async (req, res) => {
-    postController.getAll(req, res);
+router.get('', async (req, res, next) => {
+    postsController.getAll(req, res, next);
 });
 
 
 // get by postId
 router.get('/:id', (req, res, next) => {
-    postController.getPostByPostId(req, res);
+    postsController.getPostByPostId(req, res, next);
 });
 
 
 // get by userId
 router.get('/by-userId/:id', (req, res, next) => {
-    postController.getPostByUserId(req, res);
+    postsController.getPostByUserId(req, res, next);
 });
 
 
 // get by userId with regex content
 router.post('/by-userId/:id', (req, res, next) => {
-    postController.postRegexContentSearchPostUnderPosId(req, res);
+    postsController.postRegexContentSearchPostUnderPosId(req, res, next);
 });
 
 
 // get by regex content
 router.post('/by-content', (req, res) => {
-    postController.postRegexContentSearchPost(req, res);
+    postsController.postRegexContentSearchPost(req, res, next);
 })
 
 
 // post_2 with Image Imgur Process
 router.post('/with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res, next) => {
-    postController.postFormDataAddNewPost(req, res);
+    postsController.postFormDataAddNewPost(req, res, next);
 });
 
 
 // post_3 with Image Imgur Process
-router.post('/with-UrlImage', (req, res) => {
-    postController.postUrlAddNewPost(req, res);
+router.post('/with-UrlImage', (req, res, next) => {
+    postsController.postUrlAddNewPost(req, res, next);
 });
 
 
 // patch
-router.patch('/:id', (req, res) => {
-    postController.patchPost(req, res);
+router.patch('/:id', (req, res, next) => {
+    postsController.patchPost(req, res, next);
 })
 
 
 // delete all
-router.delete('', (req, res) => {
-    postController.deleteAll(req, res);
+router.delete('', (req, res, next) => {
+    postsController.deleteAll(req, res, next);
 })
 
 
 // delete id
-router.delete('/:id', async (req, res) => {
-    postController.deletePostByPostId(req, res);
+router.delete('/:id', async (req, res, next) => {
+    postsController.deletePostByPostId(req, res, next);
 })
 
 

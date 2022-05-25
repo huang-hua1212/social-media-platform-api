@@ -6,7 +6,7 @@ const commentDetailModel = require('../models/commentDetail');
 
 
 const posts = {
-    getAll: async (req, res) => {
+    getAll: async (req, res, next) => {
         postModel.find().limit(50).populate({
             path: 'user',
             select: 'name photo'
@@ -24,7 +24,7 @@ const posts = {
             });
         });
     },
-    getPostByPostId: async (req, res) => {
+    getPostByPostId: async (req, res, next) => {
         const id = req.params.id;
 
         postModel.findById(id).populate({
@@ -48,7 +48,7 @@ const posts = {
             }
         });
     },
-    getPostByUserId: async (req, res) => {
+    getPostByUserId: async (req, res, next) => {
         const id = req.params.id;
 
         postModel.find({
@@ -74,7 +74,7 @@ const posts = {
             }
         });
     },
-    postRegexContentSearchPostUnderPosId: async (req, res) => {
+    postRegexContentSearchPostUnderPosId: async (req, res, next) => {
         const id = req.params.id;
         const obj = req.body;
 
@@ -105,7 +105,7 @@ const posts = {
             }
         });
     },
-    postRegexContentSearchPost: async (req, res) => {
+    postRegexContentSearchPost: async (req, res, next) => {
         const obj = req.body;
         if (obj['content'] === undefined) {
             return next(appError(400, "欄位未填寫正確", next));
@@ -136,7 +136,7 @@ const posts = {
             });
         }
     },
-    postFormDataAddNewPost: async (req, res) => {
+    postFormDataAddNewPost: async (req, res, next) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -166,7 +166,7 @@ const posts = {
                 return next(appError(400, "新增失敗", next));
             });
     },
-    postUrlAddNewPost: async (req, res) => {
+    postUrlAddNewPost: async (req, res, next) => {
         const properties = ['user', 'tags', 'type', 'image', 'content'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
@@ -203,7 +203,7 @@ const posts = {
                 return next(appError(400, "新增失敗", next));
             });
     },
-    patchPost: async (req, res) => {
+    patchPost: async (req, res, next) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
@@ -236,7 +236,7 @@ const posts = {
                 return next(appError(400, "更新失敗", next));
             });
     },
-    deleteAll: async (req, res) => {
+    deleteAll: async (req, res, next) => {
         postModel.deleteMany({}, () => {
             res.status(200).json({
                 status: 'success',
@@ -244,7 +244,7 @@ const posts = {
             })
         });
     },
-    deletePostByPostId: async (req, res) => {
+    deletePostByPostId: async (req, res, next) => {
         const id = req.params.id;
         const post = await postModel.findOne({
             _id: id
