@@ -34,7 +34,12 @@ router.patch('/:id', (req, res, next) => {
 
 /* GET users listing. with FormData image */
 router.patch('/with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, (req, res, next) =>{
-  postsController.patchUserWithFormDataImg(req, res, next);
+  usersController.patchUserWithFormDataImg(req, res, next);
+});
+
+/* GET users listing. with FormData image */
+router.patch('/sign_up', (req, res, next) =>{
+  usersController.sign_up(req, res, next);
 });
 
 module.exports = router;

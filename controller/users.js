@@ -71,7 +71,7 @@ const users = {
                 return next(appError(400, "欄位未填寫正確", next));
             });
     },
-    patchUserWithFormDataImg: async  (req, res, next) => {
+    patchUserWithFormDataImg: async (req, res, next) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         const properties = ['name', 'username', 'password', 'role', 'sex', 'photo', 'followings', 'tokens'];
@@ -105,6 +105,22 @@ const users = {
                 return next(appError(400, "欄位未填寫正確", next));
             });
     },
+    sign_up: async (req, res, next) => {
+        try {
+            // 從 req.body 獲取驗證資訊，並在資料庫存與該用戶
+            const user = await userModel.create(req.body);
+            const [token, expiredAt] = await user.generateAuthToken();
+            // const token = await user.generateAuthToken();
+            res.status(201).send({
+                status: 'success',
+                message: '註冊成功',
+                // token,
+                // token_expiresAt: expiredAt,
+            })
+        } catch (err) {
+            return next(appError(400, err, next));
+        }
+    }
 }
 
 
