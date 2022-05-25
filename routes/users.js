@@ -38,7 +38,7 @@ router.patch('/with-FormDataImage/:id', uploadMulter.single('photo'), refreshTok
 });
 
 /* GET users listing. with FormData image */
-router.patch('/sign_up', (req, res, next) =>{
+router.post('/sign_up', (req, res, next) =>{
   usersController.sign_up(req, res, next);
 });
 
