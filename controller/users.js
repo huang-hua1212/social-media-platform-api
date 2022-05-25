@@ -120,6 +120,27 @@ const users = {
         } catch (err) {
             return next(appError(400, err, next));
         }
+    },
+    sign_in: async (req, res, next) =>{
+        try {
+            // 驗證使用者，並將驗證成功回傳的用戶完整資訊存在 user 上
+            const user = await userModel.findByCredentials(req.body.username, req.body.password);
+            // 為該成功登入之用戶產生 JWT
+            const [token, expiredAt] = await user.generateAuthToken();
+            console.log(new Date(expiredAt));
+            // console.log(expiredAt.format("dd/MM/yyyy HH:mm:ss sss"));
+            // const token = await user.generateAuthToken();
+            // 資料庫存所有tokens，但回傳給前端的只放一個使用者申請的token
+            user.tokens = [] //[token];
+            user.tokens.push({ token, expiredAt });
+            res.status(200).send({
+                status: 'success',
+                token,
+                token_expiresAt: expiredAt,
+            })
+        } catch (err) {
+            return next(appError(400, err.message, next));
+        }
     }
 }
 

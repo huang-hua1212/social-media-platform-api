@@ -32,14 +32,19 @@ router.patch('/:id', (req, res, next) => {
 });
 
 
-/* GET users listing. with FormData image */
+/* update users listing. with FormData image */
 router.patch('/with-FormDataImage/:id', uploadMulter.single('photo'), refreshToken, uploadImg, (req, res, next) =>{
   usersController.patchUserWithFormDataImg(req, res, next);
 });
 
-/* GET users listing. with FormData image */
+/* sign up */
 router.post('/sign_up', (req, res, next) =>{
   usersController.sign_up(req, res, next);
+});
+
+/* sign in */
+router.post('/sign_in', (req, res, next) =>{
+  usersController.sign_in(req, res, next);
 });
 
 module.exports = router;
