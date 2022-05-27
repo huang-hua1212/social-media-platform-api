@@ -214,7 +214,8 @@ const posts = {
             .then((result) => {
                 var fail = 0;
                 if (!result) {
-                    throw new Error(false);
+                    // throw new Error(false);
+                    return next(appError(400, "刪除失敗", next));
                 }
                 keys_1.forEach((value) => {
                     if (properties.indexOf(value) === -1) {
@@ -278,7 +279,6 @@ const posts = {
         postModel.findByIdAndDelete(id)
             .then((result) => {
                 if (!result) {
-                    console.log('no result!!');
                     throw new Error(false);
                 } else {
                     res.status(200).json({
