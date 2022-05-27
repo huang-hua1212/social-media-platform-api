@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const postModel = require('../models/post');
 const userModel = require('../models/user');
 const commentDetailModel = require('../models/commentDetail');
-
+const appError = require('../services/appError');
 
 const posts = {
     getAll: async (req, res, next) => {
@@ -248,13 +248,20 @@ const posts = {
         const id = req.params.id;
         const post = await postModel.findOne({
             _id: id
+        }).then((result) => {
+            if(!reault){
+                return next(appError(400, "刪除失敗", next));
+            }
+        }).catch(() => {
+            return next(appError(400, "刪除失敗", next));
         });
         // 刪除commentDetail的紀錄
         await post.commentDetail.forEach(async (commentId) => {
             await commentDetailModel.findByIdAndDelete(commentId).then((result) => {
                 console.log(result);
             }).catch((err) => {
-                throw new Error('Delete commentDetail fail');
+                // throw new Error('Delete commentDetail fail');
+                return next(appError(400, "刪除失敗", next));
             })
         });
 
@@ -271,6 +278,7 @@ const posts = {
         postModel.findByIdAndDelete(id)
             .then((result) => {
                 if (!result) {
+                    console.log('no result!!');
                     throw new Error(false);
                 } else {
                     res.status(200).json({
