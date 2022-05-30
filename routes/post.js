@@ -1,11 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const mongoose = require('mongoose');
-const postModel = require('../models/post');
-// const userModel = require('../models/user');
-const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
-// Temp
+const postsController = require('../controller/posts');
 const refreshToken = require('../middleware/file/imgur/refreshToken');
 const uploadImg = require('../middleware/file/imgur/upload');
 var multer = require('multer');
@@ -22,404 +17,64 @@ var uploadMulter = multer({
 })
 
 
-
-// 連結
-const DB = process.env.DATABASE
-    .replace(
-        '<username>',
-        process.env.DATABASE_USERNAME
-    )
-    .replace(
-        '<password>',
-        process.env.DATABASE_PASSWORD
-    )
-mongoose.connect(DB)
-    .then((res) => {
-    })
-    .catch((err) => {
-    });
-
-
-
 //get all
-router.get('/posts', async (req, res) => {
-    // 找到關聯user資料 populate
-    // const user = await postModel.find().populate({
-    //     path: 'user',
-    //     select: 'name photo'
-    // });
-    // console.log(user);
-
-    // 測試1
-    // dataModel.find().exec((err, datas)=>{
-    //     res.json(datas);
-    // });
-
-    // 測試2
-    // postModel.find().limit(50).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     res.status(200).json({
-    //         status: 'success',
-    //         datas,
-    //     });
-    // });
-
-
-    //測試3
-    postModel.find().limit(50).populate({
-        path: 'user',
-        select: 'name photo'
-    }).exec(function (err, datas) {
-        // console.log(docs);
-        res.status(200).json({
-            status: 'success',
-            datas,
-        });
-    });
+router.get('', async (req, res, next) => {
+    postsController.getAll(req, res, next);
 });
 
 
-
-
-
 // get by postId
-router.get('/posts/:id', (req, res) => {
-
-    const id = req.params.id;
-    // 測試1
-    // postModel.findById(id).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     if (!datas) {
-    //         res.status(200).json({
-    //             status: 'success',
-    //             datas,
-    //         });
-    //     } else {
-    //         res.status(401).json({
-    //             status: 'false',
-    //             message: "欄位未填寫正確，或無此 todo ID",
-    //         });
-    //     }
-
-    // });
-
-    // 測試2
-    postModel.findById(id).populate({
-        path: 'user',
-        select: 'name photo'
-    }).exec(function (err, datas) {
-        // console.log(datas);
-        if (datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        } else {
-            res.status(401).json({
-                status: 'false',
-                message: "欄位未填寫正確，或無此 todo ID",
-            });
-        }
-    });
+router.get('/:id', (req, res, next) => {
+    postsController.getPostByPostId(req, res, next);
 });
 
 
 // get by userId
-router.get('/posts-by-userId/:id', (req, res) => {
+router.get('/by-userId/:id', (req, res, next) => {
+    postsController.getPostByUserId(req, res, next);
+});
 
-    const id = req.params.id;
-    // 測試1
-    // postModel.findById(id).exec(function (err, datas) {
-    //     // console.log(docs);
-    //     if (!datas) {
-    //         res.status(200).json({
-    //             status: 'success',
-    //             datas,
-    //         });
-    //     } else {
-    //         res.status(401).json({
-    //             status: 'false',
-    //             message: "欄位未填寫正確，或無此 todo ID",
-    //         });
-    //     }
 
-    // });
-
-    // 測試2
-    postModel.find({ user: id }).populate({
-        path: 'user',
-        select: 'name photo'
-    }).exec(function (err, datas) {
-        // console.log(datas);
-        if (datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        } else {
-            res.status(401).json({
-                status: 'false',
-                message: "欄位未填寫正確，或無此 user ID",
-            });
-        }
-    });
+// get by userId with regex content
+router.post('/by-userId/:id', (req, res, next) => {
+    postsController.postRegexContentSearchPostUnderPosId(req, res, next);
 });
 
 
 // get by regex content
-router.post('/posts-by-content', (req, res) => {
-    const obj = req.body;
-    console.log(obj);
-    console.log(obj.content);
-    if (obj['content'] === undefined) {
-        res.status(401).json({
-            status: 'false',
-            message: "欄位未填寫正確",
-        });
-    } else {
-        // const regex = new RegExp('/'+obj['content']+'/');
-        // const reg='/'+obj['content']+'/';
-        postModel.find({ content: { $regex: obj['content'] } }).populate({
-            path: 'user',
-            select: 'name photo'
-        }).exec(function (err, datas) {
-            res.status(200).json({
-                status: 'success',
-                datas,
-            });
-        });
-    }
+router.post('/by-content', (req, res) => {
+    postsController.postRegexContentSearchPost(req, res, next);
 })
 
 
-
-// // get by one regex property
-// router.post('/posts-by-property', (req, res) => {
-//     const properties = ['name', 'tags', 'type', 'image', 'content'];
-//     const obj = req.body;
-//     const keys_1 = Object.keys(obj);
-//     var resObj = obj;
-//     const propertyName = keys_1;
-//     postModel.find({ propertyName: { $regex: obj[propertyName] } }).populate({
-//         path: 'user',
-//         select: 'name photo'
-//     }).exec().then((datas) => {
-//         res.status(200).json({
-//             status: 'success',
-//             datas,
-//         });
-//     }).catch((err) => {
-//         res.status(401).json({
-//             status: 'false',
-//             message: "欄位未填寫正確",
-//         });
-//     });
-// })
-
-
-
-// post_1 no Image Process
-router.post('/posts_1', (req, res) => {
-    // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-    const properties = ['name', 'tags', 'type', 'image', 'content'];
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    var resObj = obj;
-    postModel.create(resObj)
-        .then((data) => {
-            resObj = {};
-            var fail = 0;
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
-            } else {
-                res.status(200).json({
-                    status: "success",
-                    data,
-                });
-            }
-        })
-        .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                data: '新增失敗',
-            })
-        });
-});
-
-
 // post_2 with Image Imgur Process
-router.post('/posts-with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res) => {
-    // console.log(req.body);
-    // const properties = ['name', 'tags', 'type', 'image', 'content'];
-    const properties = ['user', 'tags', 'type', 'image', 'content'];
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    obj.image = req.imgFile.link;
-    var resObj = obj;
-    postModel.create(resObj)
-        .then((data) => {
-            resObj = {};
-            var fail = 0;
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
-            } else {
-                res.status(200).json({
-                    status: "success",
-                    data,
-                });
-            }
-        })
-        .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                message: '新增失敗',
-            })
-        });
+router.post('/with-FormDataImage', uploadMulter.single('image'), refreshToken, uploadImg, (req, res, next) => {
+    postsController.postFormDataAddNewPost(req, res, next);
 });
 
 
 // post_3 with Image Imgur Process
-router.post('/posts-with-UrlImage', (req, res) => {
-    // console.log(req.body);
-    // const properties = ['name', 'tags', 'type', 'image', 'content'];
-    const properties = ['user', 'tags', 'type', 'image', 'content'];
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    // obj.image = req.imgFile.link;
-    var resObj = obj;
-    postModel.create(resObj)
-        .then((data) => {
-            resObj = {};
-            var fail = 0;
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確" });
-            } else {
-                res.status(200).json({
-                    status: "success",
-                    data,
-                });
-            }
-        })
-        .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                message: '新增失敗',
-            })
-        });
+router.post('/with-UrlImage', (req, res, next) => {
+    postsController.postUrlAddNewPost(req, res, next);
 });
 
 
-
-
 // patch
-router.patch('/posts/:id', (req, res) => {
-    const obj = req.body;
-    const keys_1 = Object.keys(obj);
-    // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-    const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-    var resObj = obj;
-    const id = req.params.id;
-    postModel.findByIdAndUpdate(id, resObj)
-        .then((result) => {
-            var fail = 0;
-            if (!result) {
-                throw new Error(false);
-            }
-            keys_1.forEach((value) => {
-                if (properties.indexOf(value) === -1) {
-                    fail += 1;
-                }
-                resObj[value] = obj[value];
-            })
-            if (fail > 0) {
-                res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 ID" });
-
-            } else {
-                res.status(200).json({
-                    status: 'success',
-                    data: '更新成功',
-                })
-            }
-        })
-        .catch(() => {
-            res.status(400).json({
-                status: 'false',
-                data: '更新失敗或無此ID',
-            })
-        });
+router.patch('/:id', (req, res, next) => {
+    postsController.patchPost(req, res, next);
 })
+
 
 // delete all
-router.delete('/posts', (req, res) => {
-    postModel.deleteMany({}, () => {
-        res.status(200).json({
-            status: 'success',
-            data: '刪除成功',
-        })
-    });
+router.delete('', (req, res, next) => {
+    postsController.deleteAll(req, res, next);
 })
+
 
 // delete id
-router.delete('/posts/:id', (req, res) => {
-    const id = req.params.id;
-    postModel.findByIdAndDelete(id)
-        .then((result) => {
-            if (!result) {
-                throw new Error(false);
-            } else {
-                res.status(200).json({
-                    status: 'success',
-                    data: '刪除成功',
-                })
-            }
-        })
-        .catch(() => {
-            res.status(200).json({
-                status: 'false',
-                data: '刪除失敗或無此ID',
-            })
-        });
+router.delete('/:id', async (req, res, next) => {
+    postsController.deletePostByPostId(req, res, next);
 })
-
-
-
-// // 網址輸入錯誤處理
-// router.use((req, res, next) => {
-//     // 404:網址錯誤
-//     res.status(404).json({
-//         status: 'false',
-//         data: '網址輸入錯誤'
-//     })
-// })
-
-
-// // 程式錯誤處理
-// router.use((req, res, next) => {
-//     // 500:程式錯誤
-//     res.status(500).json({
-//         status: 'false',
-//         data: '程式發生問題，請稍後嘗試'
-//     })
-// })
-
 
 
 

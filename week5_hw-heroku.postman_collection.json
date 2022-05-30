@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "80445a96-c237-4b0a-87cb-cddf9f550a34",
+		"name": "week5_hw-heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "取得所有",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/628c808c45929108548d4c5b",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"628c808c45929108548d4c5b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "錯誤捕捉",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ontent\": \"234\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/error",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"error"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "posts-by-userId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/by-userId/6277d49f5b11695971e06846",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"by-userId",
+						"6277d49f5b11695971e06846"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "posts by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/62811202ff9528f00b97d9d6",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"62811202ff9528f00b97d9d6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "更新單筆",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Cc lemon\",\r\n    \"tags\": [\"謎語\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/62811202ff9528f00b97d9d6",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"62811202ff9528f00b97d9d6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增Po文-with FormData",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "6277d49f5b11695971e06846",
+							"type": "text"
+						},
+						{
+							"key": "tags",
+							"value": "生活分享",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "person",
+							"type": "text"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "yAW6oeKqE/alireza-attari-SBIak0pKUIE-unsplash.jpg"
+						},
+						{
+							"key": "content",
+							"value": "哈哈哈哈哈呼呼呼呼呼",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts/with-FormDataImage",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts",
+						"with-FormDataImage"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Frank",
+							"disabled": true
+						},
+						{
+							"key": "tags",
+							"value": "person",
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "生活分享",
+							"disabled": true
+						},
+						{
+							"key": "image",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增Po文-with Url",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Cornell Broadbear\",\r\n    \"tags\": [\"謎因\"],\r\n    \"type\": \"group\",\r\n    \"image\": \"https://images.unsplash.com/photo-1650015227869-353629023b30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=376&q=80\",\r\n    \"content\": \"coffee shop in the city around the world...\",\r\n    \"likes\": 1898,\r\n    \"comments\": 991\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://blooming-sands-85089.herokuapp.com/posts",
+					"protocol": "https",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除全部",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://blooming-sands-85089.herokuapp.com/posts",
+					"protocol": "http",
+					"host": [
+						"blooming-sands-85089",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

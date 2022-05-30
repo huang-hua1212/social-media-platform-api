@@ -1,14 +1,6 @@
-var mysql = require('mysql');
-
 var jwt = require('jsonwebtoken');  // JWT 簽名和驗證
 var conf = require('../conf');
 const userModel = require('../models/user.js');
-
-var connection = mysql.createConnection(conf.db);
-var tableName = 'accounts';
-var sql;
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 
 function login(req) {
@@ -49,7 +41,6 @@ module.exports = {
                 error: err.message
             })
         }
-        // return connection.query(sql, callback);
     },
     // 產生 OAuth 2.0 和 JWT 的 JSON 格式令牌訊息
     // mongodb
@@ -60,10 +51,12 @@ module.exports = {
             role: mongoResult.role   // 自訂聲明。用來讓伺服器確認使用者的角色權限 (決定使用者能使用 Web API 的權限)
         };
 
+        const EXPIRES_IN = 5*60 * 1000; // 5 min
         // 產生 JWT
         let token = jwt.sign(payload, process.env.SECRET, {
             // algorithm: 'HS256',
-            expiresIn: '1 day'  // JWT 的到期時間 (當前 UNIX 時間戳 + 設定的時間)。必須加上時間單位，否則預設為 ms (毫秒)
+            // expiresIn: '1 day'  // JWT 的到期時間 (當前 UNIX 時間戳 + 設定的時間)。必須加上時間單位，否則預設為 ms (毫秒)
+            expiresIn: 10,
         })
 
         // 確保客戶端瀏覽器不緩存此請求 (OAuth 2.0 標準)
@@ -74,7 +67,7 @@ module.exports = {
         return callback({
             access_token: token,
             token_type: 'bearer',
-            expires_in: '1 day',    // UNIX 時間戳 + conf.increaseTime
+            expires_in: 10,    // UNIX 時間戳 + conf.increaseTime
             scope: mongoResult.role,
             info: {
                 username: mongoResult.username
