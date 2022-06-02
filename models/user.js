@@ -129,6 +129,7 @@ userSchema.methods.generateAuthToken = async function () {
     // expiresIn後面一定要轉換成string
     const token = jwt.sign(payload, process.env.SECRET, { expiresIn: EXPIRES_IN_2min.toString()  })
     const expiredAt = new Date(EXPIRES_IN_2min +Date.now());
+    console.log("expiredAt:", expiredAt);
     // 將該 token 存入資料庫中：讓使用者能跨裝置登入及登出
     user.tokens = user.tokens.concat({ token, expiredAt})
     await user.save()
