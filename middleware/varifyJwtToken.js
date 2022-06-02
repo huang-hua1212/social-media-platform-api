@@ -10,6 +10,12 @@ module.exports = async (req, res, next) => {
     const decoded = await jwt.verify(token, process.env.SECRET);
     console.log('decoded:', decoded);
     const user = await userModel.findOne({ _id: decoded._id})
+    if(user.tokens.length === 0){
+      const err=new Error();
+      err.name = 'JsonWebTokenError';
+      throw err;
+    }
+
     // 將 token 存到 req.token 上供後續使用
     req.token = token
     // 將用戶完整資料存到 req.user 上供後續使用
