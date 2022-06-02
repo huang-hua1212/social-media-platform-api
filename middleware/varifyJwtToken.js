@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 // MONGODB找token id，和token，確認是否存在
 module.exports = async (req, res, next) => {
   try {
+    console.log(123);
     // 從來自客戶端請求的 header 取得和擷取 JWT
     const token = req.header('Authorization').replace('Bearer ', '') // 去掉Bearer字串
     // 驗證 Token
