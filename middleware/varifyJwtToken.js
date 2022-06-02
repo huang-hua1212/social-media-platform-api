@@ -6,6 +6,7 @@ module.exports = async (req, res, next) => {
   try {
     // 從來自客戶端請求的 header 取得和擷取 JWT
     const token = req.header('Authorization').replace('Bearer ', '') // 去掉Bearer字串
+    console.log("token:", token);
     // 驗證 Token
     const decoded = await jwt.verify(token, process.env.SECRET)
     const user = await userModel.findOne({ _id: decoded._id})
