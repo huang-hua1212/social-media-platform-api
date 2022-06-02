@@ -8,14 +8,12 @@ module.exports = async (req, res, next) => {
     const token = req.header('Authorization').replace('Bearer ', '') // 去掉Bearer字串
     // 驗證 Token
     const decoded = await jwt.verify(token, process.env.SECRET);
-    console.log('decoded:', decoded);
     const user = await userModel.findOne({ _id: decoded._id})
     if(user.tokens.length === 0){
       const err=new Error();
       err.name = 'JsonWebTokenError';
       throw err;
     }
-
     // 將 token 存到 req.token 上供後續使用
     req.token = token
     // 將用戶完整資料存到 req.user 上供後續使用
@@ -28,14 +26,11 @@ module.exports = async (req, res, next) => {
       // JWT 過期
       case 'TokenExpiredError':
         res.status(401).send({ error: 'invalid_grant', error_description: 'token 過期！' });
-        // res.customError = { error: 'invalid_grant', error_description: 'token 過期！' };
         break;
       // JWT 無效
       case 'JsonWebTokenError':
         res.status(401).send({ error: 'invalid_grant', error_description: 'token 無效！' });
-        // res.customError = { error: 'invalid_grant', error_description: 'token 無效！' };
         break;
     }
-    // res.status(401).send({ error: 'Please authenticate.' })
   }
 }
