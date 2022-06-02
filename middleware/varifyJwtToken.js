@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
     // 驗證 Token
     const decoded = await jwt.verify(token, process.env.SECRET)
     const user = await userModel.findOne({ _id: decoded._id})
-   console.log('date.noew():', Date.now());
+   console.log('date.noew():', new Date(Date.now()));
     // 將 token 存到 req.token 上供後續使用
     req.token = token
     // 將用戶完整資料存到 req.user 上供後續使用
