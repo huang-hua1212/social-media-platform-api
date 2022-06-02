@@ -46,10 +46,10 @@ const users = {
             .then(async (result) => {
                 var fail = 0;
                 if (!result) {
-                    throw new Error(false);
+                    // throw new Error(false);
+                    return next(appError(400, "欄位未填寫正確", next));
                 }
                 keys_1.forEach((value) => {
-
                     if (properties.indexOf(value) === -1) {
                         fail += 1;
                     }
@@ -82,7 +82,9 @@ const users = {
             .then((result) => {
                 var fail = 0;
                 if (!result) {
-                    throw new Error(false);
+                    // throw new Error(false);
+                    return next(appError(400, "欄位未填寫正確", next));
+
                 }
                 keys_1.forEach((value) => {
                     console.log(value);
@@ -127,7 +129,6 @@ const users = {
             const user = await userModel.findByCredentials(req.body.username, req.body.password);
             // 為該成功登入之用戶產生 JWT
             const [token, expiredAt] = await user.generateAuthToken();
-            console.log(new Date(expiredAt));
             // console.log(expiredAt.format("dd/MM/yyyy HH:mm:ss sss"));
             // const token = await user.generateAuthToken();
             // 資料庫存所有tokens，但回傳給前端的只放一個使用者申請的token
