@@ -13,6 +13,8 @@
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "box-node-sdk": "^2.3.0",
+    "cachegoose": "^8.0.0",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -23,6 +25,7 @@
     "eslint": "^8.13.0",
     "eslint-plugin-node": "^11.1.0",
     "express": "~4.16.1",
+    "express-session": "^1.17.3",
     "form-data": "^4.0.0",
     "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
@@ -34,6 +37,7 @@
     "onedrive-api": "^1.0.4",
     "pcloud-sdk-js": "^2.0.0",
     "qs": "^6.10.3",
+    "redis": "^3.1.2",
     "swagger-autogen": "^2.21.1",
     "swagger-ui-express": "^4.3.0"
   }

@@ -1,3 +1,4 @@
+// 參考https://www.footmark.com.tw/news/programming-language/nodejs/nodejs-restful-webapi-oauth2-jwt/#fm-chapter-3
 var jwt = require('jsonwebtoken');  // JWT 簽名和驗證
 var conf = require('../conf');
 const userModel = require('../models/user.js');
