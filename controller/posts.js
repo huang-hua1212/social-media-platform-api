@@ -138,7 +138,7 @@ const posts = {
     },
     postFormDataAddNewPost: async (req, res, next) => {
         // ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments']
-        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments'];
+        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments', 'commentDetail'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         obj.image = req.imgFile.link;
@@ -203,8 +203,7 @@ const posts = {
     patchPost: async (req, res, next) => {
         const obj = req.body;
         const keys_1 = Object.keys(obj);
-        // const properties = ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments'];
-        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments'];
+        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments', 'commentDetail'];
         var resObj = obj;
         const id = req.params.id;
         postModel.findByIdAndUpdate(id, resObj)
@@ -247,16 +246,12 @@ const posts = {
         const post = await postModel.findOne({
             _id: id
         })
-        // .then((result) => {
-        //     console.log(result);
-        //     if(!result){
-        //         return next(appError(400, "刪除失敗", next));
-        //     }
-        // }).catch((err) => {
-        //     console.log(err);
-        //     return next(appError(400, "刪除失敗", next));
-        // });
-        // console.log(post);
+
+        // 無此po文之錯誤
+        if(post === null) {
+            return next(appError(400, "無此postId", next));
+        }
+
         // 刪除commentDetail的紀錄
         await post.commentDetail.forEach(async (commentId) => {
             await commentDetailModel.findByIdAndDelete(commentId).then((result) => {
