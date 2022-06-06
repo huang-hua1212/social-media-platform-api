@@ -179,8 +179,6 @@ const posts = {
                 keys_1.forEach((value) => {
                     if (properties.indexOf(value) === -1) {
                         fail += 1;
-                        console.log(value);
-                        console.log('in fail!!!');
                     }
                     resObj[value] = obj[value];
                 })
@@ -248,13 +246,17 @@ const posts = {
         const id = req.params.id;
         const post = await postModel.findOne({
             _id: id
-        }).then((result) => {
-            if(!reault){
-                return next(appError(400, "刪除失敗", next));
-            }
-        }).catch(() => {
-            return next(appError(400, "刪除失敗", next));
-        });
+        })
+        // .then((result) => {
+        //     console.log(result);
+        //     if(!result){
+        //         return next(appError(400, "刪除失敗", next));
+        //     }
+        // }).catch((err) => {
+        //     console.log(err);
+        //     return next(appError(400, "刪除失敗", next));
+        // });
+        // console.log(post);
         // 刪除commentDetail的紀錄
         await post.commentDetail.forEach(async (commentId) => {
             await commentDetailModel.findByIdAndDelete(commentId).then((result) => {

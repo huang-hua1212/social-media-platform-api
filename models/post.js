@@ -49,6 +49,7 @@ const postSchema = new mongoose.Schema(
     commentDetail: [{
       type: mongoose.Schema.ObjectId,
       ref: "comment_detail",
+      default: [],
     }]
   },
   {
