@@ -20,7 +20,7 @@ var userFollowingRouter = require('./routes/userFollowing');
 var postLikesRouter = require('./routes/postLikes');
 var commentDetailRouter = require('./routes/commentDetail');
 var errorRouter = require('./routes/week5_HW');
-var fileCloudRouter = require('./routes/fileCloudStorage');
+var fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
 var sessionLoginRouter = require('./routes/sessionLogin');
 
 var cors = require('cors');
@@ -71,7 +71,7 @@ app.use('/', userFollowingRouter);
 app.use('/', postLikesRouter);
 app.use('/', commentDetailRouter);
 app.use('/', errorRouter);
-app.use('/fileCloudStorage', fileCloudRouter);
+app.use('/fileCloudStorage', fileCloudOneDriveRouter);
 app.use('/redisTest', redisTestRouter);
 //設置session相關設定
 app.use(session({

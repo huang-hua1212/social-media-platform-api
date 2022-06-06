@@ -137,7 +137,8 @@ const posts = {
         }
     },
     postFormDataAddNewPost: async (req, res, next) => {
-        const properties = ['user', 'tags', 'type', 'image', 'content'];
+        // ['name', 'tags', 'type', 'image', 'content', 'likes', 'comments']
+        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
         obj.image = req.imgFile.link;
@@ -167,10 +168,9 @@ const posts = {
             });
     },
     postUrlAddNewPost: async (req, res, next) => {
-        const properties = ['user', 'tags', 'type', 'image', 'content'];
+        const properties = ['user', 'tags', 'type', 'image', 'content', 'likes', 'whoLikes', 'comments'];
         const obj = req.body;
         const keys_1 = Object.keys(obj);
-        // obj.image = req.imgFile.link;
         var resObj = obj;
         postModel.create(resObj)
             .then((data) => {
@@ -179,15 +179,13 @@ const posts = {
                 keys_1.forEach((value) => {
                     if (properties.indexOf(value) === -1) {
                         fail += 1;
+                        console.log(value);
+                        console.log('in fail!!!');
                     }
                     resObj[value] = obj[value];
                 })
                 if (fail > 0) {
                     return next(appError(400, "欄位未填寫正確", next));
-                    // res.status(400).json({
-                    //     status: 'false',
-                    //     message: "欄位未填寫正確"
-                    // });
                 } else {
                     res.status(200).json({
                         status: "success",
@@ -195,7 +193,8 @@ const posts = {
                     });
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 // res.status(200).json({
                 //     status: 'false',
                 //     message: '新增失敗',
