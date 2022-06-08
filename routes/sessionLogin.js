@@ -1,4 +1,5 @@
 // 無需使用cookie-parser，就會自動在前端的cookie中儲存token值
+ // 必須用localhost才可以save cookie，若用heroku會儲存不了cookie
 var express = require('express');
 var router = express.Router();
 

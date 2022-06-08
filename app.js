@@ -48,7 +48,10 @@ process.on('uncaughException', err => {
 var app = express();
 
 // Cross-Origin Resource Sharing 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  credentials: true,
+}));
 // app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
 //   preflightContinue: true,
 //   credentials: true,
