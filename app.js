@@ -49,17 +49,13 @@ var app = express();
 
 // Cross-Origin Resource Sharing 
 // app.use(cors());
-// app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
-//   preflightContinue: true,
-//   credentials: true,
-//   origin: ['http://localhost:8080', 'http://localhost:8082']  // it's my React host
-// })
-// );
 app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
   preflightContinue: true,
   credentials: true,
+  origin: ['http://localhost:8080', 'http://localhost:8082']  // it's my React host
 })
 );
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
