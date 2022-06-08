@@ -3,8 +3,11 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/sign_in', (req, res, next) => {
-
-   console.log(req);
+   // 0608 start
+   res.header("Access-Control-Allow-Credentials", true);
+   res.header("Access-Control-Allow-Origin", req.headers.origin);
+   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+   // 0608 end
    if (req.body.firstName == "" || req.body.lastName == "") {
       res.json({ result: 'firstName和lastName其一為空!!!' });
       //  return res.redirect('Login.html');
