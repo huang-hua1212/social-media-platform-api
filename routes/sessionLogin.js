@@ -3,6 +3,9 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/sign_in', (req, res, next) => {
+   res.setHeader('Access-Control-Allow-Origin', req.headers.origin);//注意這裡不能使用 *
+   res.setHeader('Access-Control-Allow-Credentials', true);//告訴客戶端可以在HTTP請求中帶上Cookie
+   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
    console.log(req);
    if (req.body.firstName == "" || req.body.lastName == "") {
       res.json({ result: 'firstName和lastName其一為空!!!' });
