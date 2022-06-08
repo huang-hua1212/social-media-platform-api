@@ -48,13 +48,13 @@ process.on('uncaughException', err => {
 var app = express();
 
 // Cross-Origin Resource Sharing 
-// app.use(cors());
-app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
-  preflightContinue: true,
-  credentials: true,
-  origin: ['http://localhost:8080', 'http://localhost:8082']  // it's my React host
-})
-);
+app.use(cors());
+// app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
+//   preflightContinue: true,
+//   credentials: true,
+//   origin: ['http://localhost:8080', 'http://localhost:8082']  // it's my React host
+// })
+// );
 
 
 // view engine setup
@@ -81,24 +81,13 @@ app.use('/', errorRouter);
 app.use('/fileCloudStorage', fileCloudOneDriveRouter);
 app.use('/redisTest', redisTestRouter);
 //設置session相關設定
-// app.use(session({
-//   secret: 'thisismynewproject',
-//   store: new MongoStore({ url: 'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true' }),
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { 
-//     maxAge: 20 * 1000, //10分鐘到期
-//   } 
-// }));
 app.use(session({
   secret: 'thisismynewproject',
   store: new MongoStore({ url: 'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true' }),
   resave: false,
   saveUninitialized: true,
-  domain: 'localhost',
   cookie: { 
     maxAge: 20 * 1000, //10分鐘到期
-    domain: 'localhost',
   } 
 }));
 // app.use(session({
