@@ -3,14 +3,9 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/sign_in', (req, res, next) => {
-   // 0608 start
-   res.header("Access-Control-Allow-Credentials", true);
-   res.header("Access-Control-Allow-Origin", req.headers.origin);
-   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-   // 0608 end
+   console.log(req);
    if (req.body.firstName == "" || req.body.lastName == "") {
       res.json({ result: 'firstName和lastName其一為空!!!' });
-      //  return res.redirect('Login.html');
    } else if (req.body.firstName == req.session.firstName
       && req.body.lastName == req.session.lastName)
    //如果輸入的,在session store已有儲存..
@@ -23,7 +18,6 @@ router.post('/sign_in', (req, res, next) => {
       req.session.firstName = req.body.firstName;
       req.session.lastName = req.body.lastName;
       req.session.time = 1;
-      //    return res.redirect('/session');
       res.json({ result: 'session未存在，新增一個新的session!!!' });
    }
 })

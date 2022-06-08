@@ -51,7 +51,7 @@ var app = express();
 // app.use(cors());
 app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
   credentials: true,
-  origin: '*'  // it's my React host
+  origin: ['http://localhost:8080']  // it's my React host
 })
 );
 
