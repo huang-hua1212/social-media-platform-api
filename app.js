@@ -81,16 +81,25 @@ app.use('/', errorRouter);
 app.use('/fileCloudStorage', fileCloudOneDriveRouter);
 app.use('/redisTest', redisTestRouter);
 //設置session相關設定
+// app.use(session({
+//   secret: 'thisismynewproject',
+//   store: new MongoStore({ url: 'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true' }),
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: { 
+//     maxAge: 20 * 1000, //10分鐘到期
+//   } 
+// }));
 app.use(session({
   secret: 'thisismynewproject',
   store: new MongoStore({ url: 'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true' }),
   resave: false,
   saveUninitialized: true,
+  domain: 'localhost',
   cookie: { 
     maxAge: 20 * 1000, //10分鐘到期
-    sameSite: 'none', // THIS is the config you are looing for.
+    domain: 'localhost',
   } 
-
 }));
 // app.use(session({
 //   secret: 'thisismynewproject',
