@@ -48,7 +48,12 @@ process.on('uncaughException', err => {
 var app = express();
 
 // Cross-Origin Resource Sharing 
-app.use(cors());
+// app.use(cors());
+app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
+  credentials: true,
+  origin: '*'  // it's my React host
+})
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -76,10 +81,10 @@ app.use('/redisTest', redisTestRouter);
 //設置session相關設定
 app.use(session({
   secret: 'thisismynewproject',
-  store:new MongoStore({url:'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true'}),
+  store: new MongoStore({ url: 'mongodb+srv://dbUser:wendy8645@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true' }),
   resave: false,
   saveUninitialized: true,
-  cookie: { maxAge: 20* 1000 } //10分鐘到期
+  cookie: { maxAge: 20 * 1000 } //10分鐘到期
 
 }));
 // app.use(session({
