@@ -51,6 +51,7 @@ var app = express();
 // app.use(cors());
 app.use(cors({
   credentials: true,
+  origin: ['http://localhost:8080', 'http://localhost:8082'] 
 }));
 // app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
 //   preflightContinue: true,
