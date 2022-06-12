@@ -22,6 +22,8 @@ var commentDetailRouter = require('./routes/commentDetail');
 var errorRouter = require('./routes/week5_HW');
 var fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
 var sessionLoginRouter = require('./routes/sessionLogin');
+var loginAuthenticatorRouter = require('./routes/loginAuthenticator');
+
 
 var cors = require('cors');
 // swagger
@@ -94,18 +96,9 @@ app.use(session({
     maxAge: 20 * 1000, //10分鐘到期
   } 
 }));
-// app.use(session({
-//   secret: 'thisismynewproject',
-//   store: MongoStore.create({
-//     mongoUrl: 'mongodb://cluster0.ks5pg.mongodb.net:27017/hotel'
-//   }),
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: { maxAge: 600 * 1000 } //10分鐘到期
-
-// }));
 // Session Login
 app.use('/session-login', sessionLoginRouter);
+app.use('/login-authenticator', loginAuthenticatorRouter);
 
 
 // swagger
