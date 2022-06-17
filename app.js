@@ -23,6 +23,7 @@ var errorRouter = require('./routes/week5_HW');
 var fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
 var sessionLoginRouter = require('./routes/sessionLogin');
 var loginAuthenticatorRouter = require('./routes/loginAuthenticator');
+var shoppingCartRouter = require('./routes/react_tutorial_shopping_cart');
 
 
 var cors = require('cors');
@@ -99,6 +100,8 @@ app.use(session({
 // Session Login
 app.use('/session-login', sessionLoginRouter);
 app.use('/login-authenticator', loginAuthenticatorRouter);
+// reactShoppingCart test
+app.use('/react-shopping-cart', shoppingCartRouter);
 
 
 // swagger
