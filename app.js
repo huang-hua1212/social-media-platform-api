@@ -24,12 +24,14 @@ var fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
 var sessionLoginRouter = require('./routes/sessionLogin');
 var loginAuthenticatorRouter = require('./routes/loginAuthenticator');
 var shoppingCartRouter = require('./routes/react_tutorial_shopping_cart');
+var ssr  = require('./services/ssr.js');
 
 
 var cors = require('cors');
 // swagger
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger_output.json') // 剛剛輸出的 JSON
+const swaggerFile = require('./swagger_output.json'); // 剛剛輸出的 JSON
+const { Console } = require('console');
 dotenv.config({ path: './.env' });
 
 // mongodb connection
@@ -102,7 +104,19 @@ app.use('/session-login', sessionLoginRouter);
 app.use('/login-authenticator', loginAuthenticatorRouter);
 // reactShoppingCart test
 app.use('/react-shopping-cart', shoppingCartRouter);
-
+// ssr
+// a web page for ssr catch
+app.get('/ssrweb', function(req, res, next) {
+  res.render('ssrweb');
+});
+app.get('/0621_SSRTEST', async (req, res, next) => {
+  console.log("呼叫0621_SSRTEST");
+  console.log(`${req.protocol}://${req.get('host')}/ssrweb`);
+  const {html, ttRenderMs} = await ssr(`${req.protocol}://${req.get('host')}/ssrweb`);
+  // Add Server-Timing! See https://w3c.github.io/server-timing/.
+  res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);
+  return res.status(200).send(html); // Serve prerendered page as response.
+});
 
 // swagger
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))

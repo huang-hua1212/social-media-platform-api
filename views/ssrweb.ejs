@@ -1,0 +1,33 @@
+<html>
+<body>
+  <div id="container">
+    <!-- Populated by the JS below. -->
+  </div>
+</body>
+<script>
+function renderPosts(posts, container) {
+  const html = posts.reduce((html, post) => {
+    return `${html}
+      <li class="post">
+        <h2>${post.content}</h2>
+        <div class="summary">西改${post.content}</div>
+        <p>${post.content}</p>
+      </li>`;
+  }, '');
+
+  // CAREFUL: assumes html is sanitized.
+  container.innerHTML = `<ul id="posts">${html}</ul>`;
+}
+
+(async() => {
+  const container = document.querySelector('#container');
+  // const posts = await fetch('https://all-the-cors.herokuapp.com/https://blooming-sands-85089.herokuapp.com/posts')
+  // .then(response => response.json())
+  // .then(data=>data.datas);
+  const responses = await fetch('https://all-the-cors.herokuapp.com/https://blooming-sands-85089.herokuapp.com/posts');
+  const datas = await responses.json();
+  const posts = datas.datas;
+  renderPosts(posts, container);
+})();
+</script>
+</html>
