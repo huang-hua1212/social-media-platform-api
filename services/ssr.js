@@ -21,7 +21,6 @@ async function ssr(url) {
     await page.goto(url, {waitUntil: 'networkidle0'});
     await page.waitForSelector('#posts'); // ensure #posts exists in the DOM.
   } catch (err) {
-    console.error(err);
     throw new Error('page.goto/waitForSelector timed out.');
   }
 
