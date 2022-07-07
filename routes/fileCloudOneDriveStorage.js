@@ -6,16 +6,12 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const appError = require('../services/appError');
 const { default: axios } = require("axios");
+const multer = require('multer');
 dotenv.config({
     path: './.env'
 });
 
-
-var multer = require('multer');
-const {
-    default: axios
-} = require("axios");
-var uploadMulter = multer({
+const uploadMulter = multer({
     fileFilter: (req, file, cb) => {
         if (file.mimetype == " application/msword" || file.mimetype == "application/pdf" || file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
             cb(null, true)

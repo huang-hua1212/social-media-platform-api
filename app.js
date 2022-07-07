@@ -1,4 +1,3 @@
-const createError = require('http-errors');
 const dotenv = require('dotenv');
 const express = require('express');
 const path = require('path');
@@ -38,34 +37,20 @@ process.on('uncaughException', err => {
   process.exit(1);
 })
 
-
-
 var app = express();
 
-// Cross-Origin Resource Sharing 
-// app.use(cors());
 app.use(cors({
   credentials: true,
   origin: ['http://localhost:8080', 'http://localhost:8082'] 
 }));
-// app.use(cors({  // 若沒有如此設定，browser中的session便會失效，但在postman中會成功
-//   preflightContinue: true,
-//   credentials: true,
-//   origin: ['http://localhost:8080', 'http://localhost:8082']  // it's my React host
-// })
-// );
 
-
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
@@ -89,13 +74,9 @@ app.use(session({
     maxAge: 20 * 1000, //10分鐘到期
   } 
 }));
-// Session Login
 app.use('/session-login', sessionLoginRouter);
 app.use('/login-authenticator', loginAuthenticatorRouter);
-// reactShoppingCart test
 app.use('/react-shopping-cart', shoppingCartRouter);
-// ssr
-// a web page for ssr catch
 app.get('/ssrweb', function(req, res, next) {
   res.render('ssrweb');
 });
@@ -107,8 +88,6 @@ app.get('/0621_SSRTEST', async (req, res, next) => {
   res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);
   return res.status(200).send(html); // Serve prerendered page as response.
 });
-
-// swagger
 app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 
@@ -145,7 +124,6 @@ const resErrorDev = (err, res) => {
   })
 }
 
-
 app.use((err, req, res, next) => {
   // dev
   err.statusCode = err.statusCode || 500;
@@ -162,10 +140,6 @@ app.use((err, req, res, next) => {
   resErrorProd(err, res);
 })
 
-
-
-// 'uncaughException'跑來這裡，
-// 500 error handler
 app.use(function (err, req, res, next) {
   // 自訂500錯誤
   res.status(500).json({
@@ -173,48 +147,9 @@ app.use(function (err, req, res, next) {
   })
 });
 
-
-
-
-
-// 未捕捉到的 catch
 process.on('unhandledRejection', (error, promise) => {
   console.log('未捕捉到的 rejection：', promise, '原因：', error);
 })
 
-
-
-
-
-
-
-// // catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404));
-//   //     自訂404錯誤
-//   //     next(res.status(404).json({
-//   //         status: 'false',
-//   //         data: '網址輸入錯誤'
-//   //     }))
-// });
-
-
-
-// // error handler
-// app.use(function (err, req, res, next) {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // catch 500 and forward to error handler
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-//   // 自訂500錯誤
-//   // res.status(500).json({
-//   //         status: 'false',
-//   //         data: '程式發生問題，請稍後嘗試'
-//   //     })
-// });
 
 module.exports = app;
