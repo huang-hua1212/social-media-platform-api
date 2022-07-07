@@ -1,44 +1,34 @@
-var createError = require('http-errors');
+const createError = require('http-errors');
 const dotenv = require('dotenv');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var session = require('express-session');
-// session store
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const session = require('express-session');
 const MongoStore = require('connect-mongo')(session); // 此session為上面一行的session變數
-// ROUTES
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var postRouter = require('./routes/post');
-var userVerifyRouter = require('./routes/userJwt');
-var oauthLoginRouter = require('./routes/userOauth2');
-var uploadImgRouter = require('./routes/uploadImg');
-var redisTestRouter = require('./routes/redisTest');
-// var followingRouter = require('./routes/following');
-var userFollowingRouter = require('./routes/userFollowing');
-var postLikesRouter = require('./routes/postLikes');
-var commentDetailRouter = require('./routes/commentDetail');
-var errorRouter = require('./routes/week5_HW');
-var fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
-var sessionLoginRouter = require('./routes/sessionLogin');
-var loginAuthenticatorRouter = require('./routes/loginAuthenticator');
-var shoppingCartRouter = require('./routes/react_tutorial_shopping_cart');
-var ssr  = require('./services/ssr.js');
-
-
-var cors = require('cors');
-// swagger
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const postRouter = require('./routes/post');
+const userVerifyRouter = require('./routes/userJwt');
+const oauthLoginRouter = require('./routes/userOauth2');
+const uploadImgRouter = require('./routes/uploadImg');
+const redisTestRouter = require('./routes/redisTest');
+const userFollowingRouter = require('./routes/userFollowing');
+const postLikesRouter = require('./routes/postLikes');
+const commentDetailRouter = require('./routes/commentDetail');
+const errorRouter = require('./routes/week5_HW');
+const fileCloudOneDriveRouter = require('./routes/fileCloudOneDriveStorage');
+const sessionLoginRouter = require('./routes/sessionLogin');
+const loginAuthenticatorRouter = require('./routes/loginAuthenticator');
+const shoppingCartRouter = require('./routes/react_tutorial_shopping_cart');
+const ssr  = require('./services/ssr.js');
+const cors = require('cors');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json'); // 剛剛輸出的 JSON
-const { Console } = require('console');
+require('./connections/mongodb');
+// const { Console } = require('console');
 dotenv.config({ path: './.env' });
 
-// mongodb connection
-require('./connections/mongodb');
-
-// 有沒有寫錯程式碼
-//　記錄錯誤，等到服務都處理完後，停掉該ｐｒｏｃｅｓｓ
 process.on('uncaughException', err => {
   console.error('Uncaughted Exception!!');
   console.error(err);
