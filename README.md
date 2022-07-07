@@ -2,7 +2,7 @@
 Node.js + Mongodb 
 
 # Preparation
-# add a file named ==".env"== and set the parameters, the example below
+##### add a file named ==".env"== and set the parameters, the example below
 ```
 DATABASE = mongodb+srv://<username>:<password>@cluster0.ks5pg.mongodb.net/hotel?authSource=admin&replicaSet=atlas-pfbouq-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true
 DATABASE_USERNAME = xxxxx
