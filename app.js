@@ -77,14 +77,14 @@ app.use(session({
 app.use('/session-login', sessionLoginRouter);
 app.use('/login-authenticator', loginAuthenticatorRouter);
 app.use('/react-shopping-cart', shoppingCartRouter);
-app.get('/ssrweb', function(req, res, next) {
+// ssr 服務器渲染-方法一
+app.get('/ssrweb-way1', function(req, res, next) {
   res.render('ssrweb');
 });
-app.get('/0621_SSRTEST', async (req, res, next) => {
-  console.log("呼叫0621_SSRTEST");
-  console.log(`${req.protocol}://${req.get('host')}/ssrweb`);
+// ssr 服務器渲染-方法二
+app.get('/ssrewb-way2', async (req, res, next) => {
   const {html, ttRenderMs} = await ssr(`${req.protocol}://${req.get('host')}/ssrweb`);
-  // Add Server-Timing! See https://w3c.github.io/server-timing/.
+  // Add Server-Timing!
   res.set('Server-Timing', `Prerender;dur=${ttRenderMs};desc="Headless render time (ms)"`);
   return res.status(200).send(html); // Serve prerendered page as response.
 });
