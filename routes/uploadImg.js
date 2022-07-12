@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var uploadImg = require('../middleware/file/imgur/upload');
+const express = require('express');
+const router = express.Router();
+const uploadImg = require('../middleware/file/imgur/upload');
 
-var multer = require('multer');
-var uploadMulter = multer({
+const multer = require('multer');
+const uploadMulter = multer({
     fileFilter: (req, file, cb) => {
         if (file.mimetype == "image/png") {
             cb(null, true)

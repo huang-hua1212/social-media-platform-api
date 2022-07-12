@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var appError = require('../services/appError');
+const express = require('express');
+const router = express.Router();
+const appError = require('../services/appError');
 
 
 router.post('', async(req, res, next)=>{

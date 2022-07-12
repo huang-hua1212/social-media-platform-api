@@ -1,5 +1,5 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const mongoose = require('mongoose');
 const postModel = require('../models/post');
 const commentDetailModel = require('../models/commentDetail');
@@ -9,7 +9,7 @@ dotenv.config({ path: './.env' });
 
 
 
-// 留 留言
+// 留言
 router.post('/:id', addNewCommentDetail, async (req, res) => {
     try {
         const id = req.params.id;

@@ -1,8 +1,8 @@
-var express = require("express");
+const express = require("express");
 const app = require("../app");
-var router = express.Router();
-var mongoose = require('mongoose');
-var cachegoose = require('cachegoose');
+const router = express.Router();
+const mongoose = require('mongoose');
+const cachegoose = require('cachegoose');
 const userModel = require('../models/user');
 
 // cachegoose(mongoose, {

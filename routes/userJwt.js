@@ -1,10 +1,9 @@
-var express = require("express");
+const express = require("express");
 const userModel = require('../models/user.js');
 const auth = require('../middleware/varifyJwtToken');
 const login = require('../middleware/login');
 const accessControl = require('../middleware/accessControl');
-
-var router = express.Router();
+const router = express.Router();
 
 
 
@@ -43,17 +42,9 @@ router.post('/login', async (req, res) => {
         const user = await userModel.findByCredentials(req.body.username, req.body.password);
         // 為該成功登入之用戶產生 JWT
         const [token, expiredAt] = await user.generateAuthToken();
-        console.log(new Date(expiredAt));
-        // console.log(expiredAt.format("dd/MM/yyyy HH:mm:ss sss"));
-        // const token = await user.generateAuthToken();
         // 資料庫存所有tokens，但回傳給前端的只放一個使用者申請的token
         user.tokens = [] //[token];
         user.tokens.push({ token, expiredAt });
-        // 回傳該用戶資訊及 JWT
-        // res.status(200).send({
-        //     status: 'success',
-        //     user,
-        // })
         res.status(200).send({
             status: 'success',
             token,

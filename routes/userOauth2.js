@@ -4,14 +4,6 @@ const auth = require('../middleware/varifyJwtToken');
 const login = require('../middleware/login');
 var router = express.Router();
 
-
-
-
-
-
-
-
-
 // 註冊路由: 1.新增帳號密碼=>加密密碼 2.新增token
 router.post('/register', async (req, res) => {
     try {

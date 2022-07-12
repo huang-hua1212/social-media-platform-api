@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
-var speakeasy = require('speakeasy');
-var qrcode = require('qrcode');
+const express = require("express");
+const router = express.Router();
+const speakeasy = require('speakeasy');
+const qrcode = require('qrcode');
 
 router.get('/authenticate-step1-generate-authenticator', (req, res) => {
     const secret = speakeasy.generateSecret();
