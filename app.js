@@ -54,14 +54,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/posts', postRouter);
-app.use('/', userVerifyRouter);
-app.use('/', oauthLoginRouter);
-app.use('/', uploadImgRouter);
+app.use('/user', userVerifyRouter);
+app.use('/userOauth', oauthLoginRouter);
+app.use('/uploadImg', uploadImgRouter);
 // app.use('/', followingRouter);
-app.use('/', userFollowingRouter);
-app.use('/', postLikesRouter);
-app.use('/', commentDetailRouter);
-app.use('/', errorRouter);
+app.use('/userFollowing', userFollowingRouter);
+app.use('/postLikes', postLikesRouter);
+app.use('/postAddComment', commentDetailRouter);
+app.use('/error', errorRouter);
 app.use('/fileCloudStorage', fileCloudOneDriveRouter);
 app.use('/redisTest', redisTestRouter);
 //設置session相關設定
@@ -75,7 +75,7 @@ app.use(session({
   } 
 }));
 app.use('/session-login', sessionLoginRouter);
-app.use('/login-authenticator', loginAuthenticatorRouter);
+app.use('/login-twofactor-authenticator', loginAuthenticatorRouter);
 app.use('/react-shopping-cart', shoppingCartRouter);
 // ssr 服務器渲染-方法一
 app.get('/ssrweb-way1', function(req, res, next) {

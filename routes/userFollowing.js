@@ -13,7 +13,7 @@ dotenv.config({ path: './.env' });
 
 // 追蹤
 // :id為使用者
-router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
+router.post('/:id', addNewFollowing, async (req, res) => {
     try {
         const id = req.params.id;
         const user = await userModel.findOne({ _id: id });
@@ -32,7 +32,7 @@ router.post('/userFollowing/:id', addNewFollowing, async (req, res) => {
 
 // 退追蹤
 // :id為userId, userFollowing collection的_id
-router.patch('/userFollowing/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
     try {
         const userId = req.params.id;
         const followingId = req.body._id;

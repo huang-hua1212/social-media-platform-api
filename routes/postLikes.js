@@ -37,7 +37,7 @@ dotenv.config({ path: './.env' });
 
 
 // :id為哪篇po文之id
-router.patch('/postLikes/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   try {
     const userId = req.body.user_id;
     const postId = req.params.id;

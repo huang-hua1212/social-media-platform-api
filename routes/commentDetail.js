@@ -10,7 +10,7 @@ dotenv.config({ path: './.env' });
 
 
 // 留 留言
-router.post('/postAddComment/:id', addNewCommentDetail, async (req, res) => {
+router.post('/:id', addNewCommentDetail, async (req, res) => {
     try {
         const id = req.params.id;
         const post = await postModel.findOne({ _id: id });
@@ -27,7 +27,7 @@ router.post('/postAddComment/:id', addNewCommentDetail, async (req, res) => {
 
 
 // 刪除留言
-router.patch('/postAddComment/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
 
     try {
         const postId = req.params.id;
@@ -45,13 +45,6 @@ router.patch('/postAddComment/:id', async (req, res) => {
         }).catch(err=>{
             console.log(err);
         })
-        // const post = await postModel.findOne({ _id: id });
-        // post.commentDetail.push(req.commentDetailId);
-        // post.save();
-        // res.status(200).json({
-        //     status: 'success',
-        //     data: post,
-        // });
     } catch {
         res.status(400).json({ status: 'false', message: "欄位未填寫正確，或無此 todo ID" });
     }

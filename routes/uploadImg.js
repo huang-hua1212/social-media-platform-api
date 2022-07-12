@@ -15,7 +15,7 @@ var uploadMulter = multer({
     }
 })
 
-router.post('/uploadImg', uploadMulter.single('image'), uploadImg, (req, res) => {
+router.post('', uploadMulter.single('image'), uploadImg, (req, res) => {
     try {
         const data = req.imgFile;
         res.status(200).json({ status: 'success', data });

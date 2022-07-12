@@ -3,7 +3,7 @@ var router = express.Router();
 var appError = require('../services/appError');
 
 
-router.post('/error', async(req, res, next)=>{
+router.post('', async(req, res, next)=>{
     if(req.body.content ==undefined) {
         return next(appError(400, "你沒有填寫contetent", next));
     }
