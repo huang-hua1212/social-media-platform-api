@@ -38,11 +38,11 @@ process.on('uncaughException', err => {
 })
 
 var app = express();
-
-app.use(cors({
-  credentials: true,
-  origin: ['http://localhost:8080', 'http://localhost:8082'] 
-}));
+app.use(cors());
+// app.use(cors({
+//   credentials: true,
+//   origin: ['http://localhost:8080', 'http://localhost:8082'] 
+// }));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
